@@ -1,6 +1,8 @@
 import { Component, signal, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Movie } from './services/movie';
+import { MovieSchema } from '../models/movie-schema';
+import { ClientSchema } from '../models/client-schema';
 
 @Component({
   selector: 'app-root',
@@ -8,29 +10,30 @@ import { Movie } from './services/movie';
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
-export class App implements OnInit  {
+export class App {
 
   protected readonly title = signal('frontend-curser');
-  protected listOfItems =  [
-          { title: 'Teste Explore teste the Docs', link: 'https://angular.dev' },
-          { title: 'Learn with Tutorials', link: 'https://angular.dev/tutorials' },
-          { title: 'Prompt and best practices for AI', link: 'https://angular.dev/ai/develop-with-ai'},
-          { title: 'CLI Docs', link: 'https://angular.dev/tools/cli' },
-          { title: 'Angular Language Service', link: 'https://angular.dev/tools/language-service' },
-          { title: 'Angular DevTools', link: 'https://angular.dev/tools/devtools' },
-        ]
 
-   users: any[] = [];
 
-  constructor(private userService: Movie) {}
+  movies: MovieSchema[] = [];
 
-  ngOnInit() {
-    this.userService.getUsers().subscribe((data) => {
-      this.users = data;
+  ngOnInit(): void {
+    this.movieService.listAllMovies().subscribe({
+      next: (movies:MovieSchema[]) => {
+        this.movies = movies;
+
+      },
+      error: (err:any) => {
+        console.error('Erro ao carregar filmes:', err);
+      },
     });
   }
 
-  printUsers (){
-    console.log(this.users)
+
+  constructor(private movieService: Movie) {}
+
+  printMovies(){
+    console.log(this.movies)
   }
+
 }

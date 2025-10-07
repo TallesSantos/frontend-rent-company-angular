@@ -170,3 +170,8 @@
       margin-block: 1.5rem;
     }
   }
+
+  .movie{
+    border-bottom: solid black 1px;
+
+  }
