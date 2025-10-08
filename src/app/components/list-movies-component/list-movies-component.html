@@ -1,0 +1,9 @@
+  <div class="pill-group">
+
+      <h1>All movies:</h1>
+       @for (movie of movies; track movie.id) {
+          <div class="movie">
+            <app-movie-component [user]="user" [movie]="movie" [isLogged]="isLogged" [isAdmin]="isAdmin"></app-movie-component>
+          </div>
+        }
+  </div>

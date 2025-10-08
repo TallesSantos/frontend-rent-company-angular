@@ -1,0 +1,38 @@
+<div class="movie">
+    <p>
+        <strong>{{ movie.name }}</strong>
+
+        @if(isAdmin){
+        <strong>Edit:</strong><input [(ngModel)]="name" type="text" />
+        }
+    </p>
+
+    <p>
+        {{ movie?.description }}
+        @if(isAdmin){
+        <strong>Edit:</strong><input [(ngModel)]="description" type="text" />
+        }
+    </p>
+
+    <img [src]="movie.image_url" [alt]="movie.name" />
+    @if (movie.client) {
+        <div class="rent_client">
+            <p>Rent to client: {{ movie.client.name }}</p>
+            <p>Rented: {{ movie.is_rent }}</p>
+        <p>Date: {{movie.rent_date}}</p>
+        </div>
+
+    } @if(isAdmin){
+    <button (click)="updateMovie(movie.id, name, description)">update</button>
+    <button (click)="removeMovie(movie.id)">remove</button>
+    }
+
+    @if(user !== null && user.id !== undefined && movie.client !== null && user?.id === movie.client?.id ){
+        <p>Rented by you</p>
+        <button (click)="returnMovie(user.id, movie.id)">return this movie</button>
+    }
+
+    @if( user !== null && user.id !== undefined  && isLogged && !isAdmin && !movie.is_rent){
+       <button (click)="rentMovie(user.id, movie.id)">rent this movie</button>
+    }
+</div>

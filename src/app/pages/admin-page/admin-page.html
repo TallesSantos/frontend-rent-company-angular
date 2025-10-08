@@ -1,0 +1,15 @@
+<div>
+
+<h1>Admin Page</h1>
+
+<div>
+<p>add movie</p>
+<label>name:</label><input type="text" [(ngModel)]="name" />
+<label>description</label><input type="text" [(ngModel)]="description" />
+<button (click)="createMovie(name, description)">confirm</button>
+</div>
+
+
+<app-list-movies-component [isLogged]="true" [isAdmin]="true"></app-list-movies-component>
+
+</div>

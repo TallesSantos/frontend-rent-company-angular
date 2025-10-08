@@ -7,4 +7,5 @@ export interface MovieSchema {
   is_rent?: boolean;
   rent_date?: string;
   client?:ClientSchema | null
+  image_url?:string
 }
