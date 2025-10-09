@@ -57,3 +57,9 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+
+# TODO
+
+ * [x] Implementação de inteface para crud de movie e client, inclusive para alugar e devolver filme. 
+ * [X] Criação do usuario e crud do mesmo para que seja possivel manipular usuários pelo front. Obs: Criar permissões de criação de movie e validações(por exemplo não se pode deletar um movie do catalogo se ele estiver alugado)

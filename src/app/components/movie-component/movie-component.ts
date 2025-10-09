@@ -1,80 +1,131 @@
-import { Component, Input, input } from '@angular/core';
+import { MovieSchema } from './../../../models/movie-schema';
+import { Component, Input, input, OnInit } from '@angular/core';
 
-import { MovieSchema } from '../../../models/movie-schema';
-import { Movie } from '../../services/movie';
+import { MovieService } from '../../services/movie-service/movie-service';
 import { FormsModule } from '@angular/forms';
 import { UserSchema } from '../../../models/user-schema';
+import { UseService } from '../../services/user-service/use-service';
 
 @Component({
-  selector: 'app-movie-component',
-  standalone: true,
-  imports: [FormsModule],
-  templateUrl: './movie-component.html',
-  styleUrl: './movie-component.css',
+    selector: 'app-movie-component',
+    standalone: true,
+    imports: [FormsModule],
+    templateUrl: './movie-component.html',
+    styleUrls: ['../../styles/global.css', './movie-component.css'],
 })
-export class MovieComponent {
-  constructor(private movieService: Movie) {}
+export class MovieComponent implements OnInit {
+    constructor(private movieService: MovieService, private userService: UseService) {}
 
-  @Input() isLogged!: boolean;
+    @Input() movie!: MovieSchema;
 
-  @Input() isAdmin!: boolean;
+    @Input() user!: UserSchema | null;
 
-  @Input() movie!: MovieSchema;
+    public id!: number;
+    public name = '';
+    public description = '';
 
-  @Input() user: UserSchema | null =null;
+    ngOnInit(): void {
+        this.user = this.userService.getUser();
+    }
 
-  public id!: number;
-  public name = '';
-  public description = '';
+    fallbackUrl: string = 'images/image_movie_fallback.jpeg';
+
+    fallback(event: Event) {
+        const imgElement = event.target as HTMLImageElement;
+        imgElement.src = this.fallbackUrl;
+    }
+
+    updateMovie(id: number, name: string, description: string) {
+        const movie = { id: id, name: name, description: description };
+        this.movieService.editMovie(id, movie).subscribe({
+            next: () => {
+                console.log('Filme atualizado com sucesso');
+                this.movieService.triggerReloadListOfMovies();
+            },
+            error: (err) => {
+                console.error('Erro ao atualizar filme:', err);
+            },
+        });
+    }
+    removeMovie(id: number) {
+        this.movieService.deleteMovie(id).subscribe({
+            next: () => {
+                console.log('Filme deletado com sucesso');
+                this.movieService.triggerReloadListOfMovies();
+            },
+            error: (err) => {
+                console.error('Erro ao deletar o filme:', err);
+            },
+        });
+    }
+
+    rentMovie(movieId: number) {
+        this.movieService.rentMovie(this.user?.client?.id!, movieId).subscribe({
+            next: () => {
+                console.log('Filme alugado com sucesso');
+                this.movieService.triggerReloadListOfMovies();
+            },
+            error: (err) => {
+                console.error('Erro ao alugar o filme:', err);
+            },
+        });
+    }
+
+    returnMovie(movieId: number) {
+        this.movieService.returnMovie(this.user?.client?.id!, movieId).subscribe({
+            next: () => {
+                console.log('Filme devolvido com sucesso');
+                this.movieService.triggerReloadListOfMovies();
+            },
+            error: (err) => {
+                console.error('Erro ao devolver o filme:', err);
+            },
+        });
+    }
+
+    userIsNotNull() {
+        if (this.user !== null &&  this.user?.id !== undefined) {
+            return true;
+        }
+        return false;
+    }
+    userIsAdmin() {
+        if (this.userIsNotNull() && this.user?.userType === 'ADMIN') {
+            return true;
+        }
+        return false;
+    }
+
+    userIsClient() {
+        if (this.userIsNotNull() && this.user?.userType === 'CLIENT' && this.user.client?.id) {
+            return true;
+        }
+        return false;
+    }
+
+    printUser(){
+        console.log(this.user)
+    }
 
 
-  updateMovie(id: number, name: string, description: string) {
-    const movie = { id: id, name: name, description: description };
-    this.movieService.editMovie(id, movie).subscribe({
-      next: () => {
-        console.log('Filme atualizado com sucesso');
-      },
-      error: (err) => {
-        console.error('Erro ao atualizar filme:', err);
-      },
-    });
+    printMovie(movie: MovieSchema){
+        console.log(movie)
+    }
 
-    console.log(id);
-    console.log(name);
-    console.log(description);
-  }
-  removeMovie(id: number) {
-    this.movieService.deleteMovie(id).subscribe({
-      next: () => {
-        console.log('Filme deletado com sucesso');
-      },
-      error: (err) => {
-        console.error('Erro ao deletar o filme:', err);
-      },
-    });
-    console.log(id);
-  }
+    getClientId(){
+        return this.user?.client?.id
+    }
 
-  rentMovie(userId:number, movieId:number){
-    this.movieService.rentMovie(userId, movieId).subscribe({
-      next: () => {
-        console.log('Filme alugado com sucesso');
-      },
-      error: (err) => {
-        console.error('Erro ao alugar o filme:', err);
-      },
-    });
-
-  }
-
-   returnMovie(userId:number, movieId:number){
-  this.movieService.returnMovie(userId, movieId).subscribe({
-      next: () => {
-        console.log('Filme devolvido com sucesso');
-      },
-      error: (err) => {
-        console.error('Erro ao devolver o filme:', err);
-      },
-    });
-  }
+    movieIsRented(movie: MovieSchema ){
+        if(movie.is_rent){
+            return true
+        }
+        return false
+    }
+    movieRentedByCurrentUser(movie: MovieSchema){
+        if(movie.client){
+            return true
+        }
+        return false
+    }
 }

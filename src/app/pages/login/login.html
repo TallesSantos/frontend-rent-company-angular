@@ -1,0 +1,9 @@
+ <div>
+    <div class="error_panel">
+        <p>{{error}}</p>
+
+    </div>
+    <p>login: <input type="text" [(ngModel)]="username" /></p>
+    <p>password: <input type="password" [(ngModel)]="password" /></p>
+    <button (click)="requestLogin(username, password)">login</button>
+ </div>

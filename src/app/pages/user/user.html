@@ -1,0 +1,24 @@
+<div>
+    <nav>
+        <ul>
+
+
+        <li><a routerLink="user-profile">User profile</a></li>
+
+        <li><a routerLink="all-movies">All movies</a></li>
+
+        @if(user?.userType === "CLIENT"){
+            <li><a routerLink="rented-movies">rented movies</a></li>
+        }
+
+        @if(user?.userType === "ADMIN"){
+            <li><a routerLink="manage-movies">Manage movies</a></li>
+            <li><a routerLink="manage-users">Manage users</a></li>
+        }
+
+        </ul>
+        </nav>
+    <button (click)='requestLogoff()'>logoff</button>
+    user works!
+    <router-outlet />
+</div>

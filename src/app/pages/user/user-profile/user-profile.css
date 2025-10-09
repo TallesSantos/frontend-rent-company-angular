@@ -1,0 +1,29 @@
+.container {
+    display: flex;
+}
+
+.container-item{
+    width: 50%;
+}
+
+.property_panel{
+   height :100px;
+   border: dashed 1px gray;
+   overflow-y: scroll;
+   position: relative;
+   padding: 10px;
+   margin-bottom: 20px;
+}
+
+.add_property {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+
+}
+
+.property{
+    border: dashed, 1px, gray;
+    padding: 10px;
+}

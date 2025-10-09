@@ -1,42 +1,22 @@
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * The content below * * * * * * * * * * * -->
-<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
-<!-- * * * * * * * * * * and can be replaced.  * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * Delete the template below * * * * * * * * * -->
-<!-- * * * * * * * to get started with your project! * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 
+<header class="header">
 
+    header
+    <nav>
+    <ul>
+        <li><a routerLink="">Catalog</a></li>
+        <li><a routerLink="login">Login</a></li>
+        <li><a routerLink="about">about</a></li>
+
+    </ul>
+    </nav>
+
+</header>
 <main class="main">
-
-  @if(isAdmin || isLogged){
-    <button (click)="requestLogoff()">Logoff</button>
-  }
-
-  @if(isAdmin){
- <app-admin-page [isLogged]="true" [isAdmin]="true"></app-admin-page>
-  }
-  @else if(isLogged){
- <app-client-page [user]="user" [isLogged]="true" [isAdmin]="false"></app-client-page>
-  }@else {
- <app-home-page></app-home-page>
-  <div>
-    <p>login: <input type="text" [(ngModel)]="username" /></p>
-    <p>password: <input type="password" [(ngModel)]="password" /></p>
-    <button (click)="requestLogin(username, password)">login</button>
- </div>
-  }
-
+    Main
+    <router-outlet />
 </main>
-
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * The content above * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * * -->
-<!-- * * * * * * * * * * and can be replaced.  * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * End of Placeholder  * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<footer class="footer">footer</footer>
 
 
-<router-outlet />
+

@@ -1,0 +1,56 @@
+<div>
+    <div>name: {{ user?.id }}</div>
+    <div>name: {{ user?.name }}</div>
+    <div>name: {{ user?.email }}</div>
+    <div class="container">
+        <div class="container-item">
+            <div class="property_panel">
+                <button class="add_property">Add address</button>
+                <h1>Address menu</h1>
+                @if(user?.addresses !== null){ @for(address of user?.addresses; let i = $index;
+                track address.city){
+                <div class="property">
+                    <p>Address {{ i + 1 }}</p>
+                    <p>country: {{ address?.country }}</p>
+                    <p>state: {{ address?.state }}</p>
+                    <p>city: {{ address?.city }}</p>
+                    <p>streetAddress: {{ address?.streetAddress }}</p>
+                    <p>Number: {{ address?.number }}</p>
+                    <p>Comment: {{ address?.comment }}</p>
+                </div>
+                } }
+            </div>
+
+            <div class="property_panel">
+                <button class="add_property">Add Phone</button>
+                <h1>Phone menu</h1>
+
+                @if(user?.phone !== null){ @for(phone of user?.phone; let i = $index; track
+                phone.phoneNumber){
+                <div class="property">
+                    <p>Phone {{ i + 1 }}</p>
+                    <p>{{ phone?.phoneNumber }}</p>
+                </div>
+                } }
+            </div>
+        </div>
+        @if(user?.userType === "ADMIN"){
+        <div class="container-item">
+            <div class="property_panel">
+                <h1>Permission menu</h1>
+                <div class="property_panel">
+                    @if(user?.permissionRoles !== null){ @for(permission of user?.permissionRoles;
+                    track permission.id){
+                    <div>
+                        <p>{{ permission?.name }}</p>
+                    </div>
+                    } }
+                </div>
+            </div>
+        </div>
+        } @if(user?.userType === "CLIENT"){
+            <p>TODO: listar todos os filmes que o usuário tem alugado ou notificações para ele</p>
+
+        }
+    </div>
+</div>

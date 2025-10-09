@@ -1,0 +1,13 @@
+.header {
+min-height: 10vh;
+background: blueviolet;
+}
+
+.main {
+    min-height: 80vh;
+}
+
+.footer {
+    min-height: 10vh;
+    background: blueviolet;
+}

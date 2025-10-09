@@ -1,0 +1,11 @@
+img {
+    height: 100px;
+}
+
+.rented_by_user {
+    color: green;
+}
+
+.not_avaliable {
+    color: red;
+}
