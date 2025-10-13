@@ -3,7 +3,8 @@ import { MovieSchema } from "../../../models/movie-schema";
    export function createCommentSchema(comments: NodeListOf<Element>) {
         const commentsResponse: CommentSchema[] = [];
         comments.forEach((element) => {
-            const commentId = 1;
+            const commentId = Number(element.querySelector(':scope > id')?.textContent);
+
             const commentText = element.querySelector(':scope > commentText')?.textContent;
 
             const commentLikes: string[] = [];

@@ -1,7 +1,4 @@
-export interface SoapRequestBodySchema {
-    properties: RequestProperty[];
+export interface SoapRequestBodyParam {
+    properties: string[];
 }
-export interface RequestProperty {
-    propertyName: string | null;
-    propertyValue: string | number | boolean | null;
-}
+

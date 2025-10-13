@@ -56,8 +56,8 @@ export class MovieService {
         const body = createSoapBody([
             {
                 properties: [
-                    { propertyName: 'name', propertyValue: name },
-                    { propertyName: 'description', propertyValue: description },
+                    `<name> ${name}</name> `,
+                    `<description> ${description}</description> `,
                 ],
             },
         ]);
@@ -69,19 +69,17 @@ export class MovieService {
     }
 
     editMovie(id: number, request: MovieSchema): Observable<string> {
+        const requestProperties = [`<id>${id}</id>`];
+        if (request.name) {
+            requestProperties.push(`<name>${request.name}</name>`);
+        }
+        if (request.description) {
+            requestProperties.push(`<description>${request.description}</description>`);
+        }
+
         const body = createSoapBody([
             {
-                properties: [
-                    { propertyName: 'id', propertyValue: id },
-                    {
-                        propertyName: request.name ? 'name' : null,
-                        propertyValue: request.name ? request.name : null,
-                    },
-                    {
-                        propertyName: request.description ? 'description' : null,
-                        propertyValue: request.description ? request.description : null,
-                    },
-                ],
+                properties: requestProperties,
             },
         ]);
 
@@ -92,9 +90,10 @@ export class MovieService {
     }
 
     deleteMovie(id: number): Observable<string> {
+
         const body = `
-            <arg0>${id}</arg0>
-          `;
+            <arg0> ${id} </arg0>
+        `;
 
         return this.http.post(this.apiUrlMovieService, createSoapEnvelope('deleteMovie', body), {
             headers: this.headers,
@@ -103,22 +102,26 @@ export class MovieService {
     }
 
     rentMovie(idClient: number, idMovie: number): Observable<string> {
-        const body = `
-            <arg0>${idClient}</arg0>
-            <arg1>${idMovie}</arg1>
-          `;
 
-        return this.http.post(this.apiUrlClientService, createSoapEnvelope('rentMovie', body), {
+        const body = `
+            <arg0> ${idClient} </arg0>
+            <arg1> ${idMovie} </arg1>
+        `;
+
+        const soapEnvelop = createSoapEnvelope('rentMovie', body)
+
+        return this.http.post(this.apiUrlClientService,soapEnvelop , {
             headers: this.headers,
             responseType: 'text',
         });
     }
 
     returnMovie(idClient: number, idMovie: number): Observable<string> {
+
         const body = `
-            <arg0>${idClient}</arg0>
-            <arg1>${idMovie}</arg1>
-          `;
+            <arg0> ${idClient} </arg0>
+            <arg1> ${idMovie} </arg1>
+        `;
 
         return this.http.post(this.apiUrlClientService, createSoapEnvelope('returnMovie', body), {
             headers: this.headers,

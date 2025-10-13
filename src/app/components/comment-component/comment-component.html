@@ -11,7 +11,7 @@
     }
 
 
-    @for(children of comment.children; let i = $index; track comment.children){
+    @for(children of comment.children; let i = $index; track children.id){
     <div>
 
         <div  class="comment" [style.margin]="computedWidth" *ngIf="showChildrenComments" class="toggle_children_comments" [level]="level + 1" app-comment-component [comment]="children">

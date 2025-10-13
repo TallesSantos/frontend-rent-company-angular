@@ -1,6 +1,4 @@
-import { SoapRequestBodySchema } from '../../../models/request/xml-request-model';
-
-
+import { SoapRequestBodyParam } from './../../../models/request/xml-request-model';
 
 export function createSoapEnvelope(method: string, body: string = '') {
     return `
@@ -15,18 +13,16 @@ export function createSoapEnvelope(method: string, body: string = '') {
   `;
 }
 
-export function createSoapBody(listBodyJson: SoapRequestBodySchema[]) {
+export function createSoapBody(listBodyJson: SoapRequestBodyParam[]) {
     let property = '';
-
-
 
     for (let i = 0; i < listBodyJson.length; i++) {
         property += `<arg${i}>`;
 
-        for (let j = 0; j < listBodyJson[i].properties.length; j++) {
-            property += `<${listBodyJson[i].properties[j].propertyName}>
-                ${listBodyJson[i].properties[j].propertyValue}
-            </${listBodyJson[i].properties[j].propertyName}>`;
+        for (let j = 0; j <= listBodyJson[i].properties.length; j++) {
+            if (listBodyJson[i].properties[j] !=="" && listBodyJson[i].properties[j] !==undefined ) {
+                property += `${listBodyJson[i].properties[j]}`;
+            }
         }
         property += `</arg${i}>`;
     }

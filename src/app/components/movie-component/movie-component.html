@@ -37,19 +37,16 @@
     } @else {
     <p class="avaliable">Available</p>
     <button (click)="rentMovie(movie.id)">rent movie</button>
-    } } @if(user?.userType =="CLIENT"){
-    <div *ngFor="let likerName of movie.nameOfLikers">
-        <p>{{ likerName }}</p>
-    </div>
-    @if(movie.comments!== undefined && movie.comments.length > 0 ){
+    } } @if(user?.userType =="CLIENT"){ @for(likerName of movie.nameOfLikers;track likerName){
+    <p>{{ likerName }}</p>
+    } @if(movie.comments!== undefined && movie.comments.length > 0 ){
     <p>comments: {{ movie.comments?.length }}</p>
     <button (click)="toggleComments()">Comments:</button>
 
-    } @if (showComments && movie.comments!== null) {
-    <div *ngFor="let comment of movie.comments">
-        <div app-comment-component [comment]="comment">
-            <p><strong>Comentario root </strong></p>
-        </div>
+    } @if (showComments && movie.comments!== null) { @for(comment of movie.comments;track
+    comment.id){
+    <div app-comment-component [comment]="comment">
+        <p><strong>Comentario root </strong></p>
     </div>
-    } }
+    } } }
 </div>
