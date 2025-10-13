@@ -1,6 +1,6 @@
-# Frontend rent company
+# Frontend_rent_company
 
-## Features git 
+## Feature gif: 
 ![feature gif](doc/locadora_com_angular_atualizado.gif)
 
 
