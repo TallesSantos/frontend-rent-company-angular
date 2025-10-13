@@ -1,7 +1,4 @@
-.header {
-min-height: 10vh;
-background: blueviolet;
-}
+
 
 .main {
     min-height: 80vh;
@@ -9,5 +6,5 @@ background: blueviolet;
 
 .footer {
     min-height: 10vh;
-    background: blueviolet;
+    background: var(--secondary-color);
 }

@@ -1,5 +1,7 @@
 <div class="movie">
+
     <div>
+    <a routerLink="/qualquer-lugar">access description</a>
     <p>
         <strong>{{ movie.name }}</strong>
 
@@ -38,4 +40,10 @@
     <p class="avaliable">Available</p>
     <button (click)="rentMovie(movie.id)">rent movie</button>
     } }
+
+    <div *ngFor="let likerName of movie.nameOfLikers" >
+       <p>{{likerName}}</p>
+    </div>
+
+
 </div>

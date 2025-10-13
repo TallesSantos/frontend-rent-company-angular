@@ -6,12 +6,13 @@ import { MovieComponent } from '../movie-component/movie-component';
 import { UserSchema } from '../../../models/user-schema';
 import { switchMap } from 'rxjs';
 import { UseService } from '../../services/user-service/use-service';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
     selector: 'app-list-movies-component',
     standalone: true,
-    imports: [FormsModule, MovieComponent],
+    imports: [FormsModule, MovieComponent,CommonModule],
     templateUrl: './list-movies-component.html',
     styleUrl: './list-movies-component.css',
 })

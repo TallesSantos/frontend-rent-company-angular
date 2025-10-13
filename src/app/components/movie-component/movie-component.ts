@@ -5,13 +5,15 @@ import { MovieService } from '../../services/movie-service/movie-service';
 import { FormsModule } from '@angular/forms';
 import { UserSchema } from '../../../models/user-schema';
 import { UseService } from '../../services/user-service/use-service';
+import { RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-movie-component',
     standalone: true,
-    imports: [FormsModule],
+    imports: [FormsModule, RouterLink, CommonModule],
     templateUrl: './movie-component.html',
-    styleUrls: ['../../styles/global.css', './movie-component.css'],
+    styleUrls: ['./movie-component.css'],
 })
 export class MovieComponent implements OnInit {
     constructor(private movieService: MovieService, private userService: UseService) {}

@@ -5,7 +5,7 @@ import { UserSchema } from '../../../models/user-schema';
 
 @Component({
     selector: 'app-user',
-    imports: [RouterOutlet, RouterLink],
+    imports: [RouterOutlet],
     templateUrl: './user.html',
     styleUrl: './user.css',
 })
@@ -20,10 +20,5 @@ export class User implements OnInit {
 
     getUser() {
         return this.userService.getUser();
-    }
-
-    requestLogoff() {
-        this.userService.setUser(null);
-        this.router.navigate(['']);
     }
 }

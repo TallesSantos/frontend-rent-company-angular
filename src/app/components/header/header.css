@@ -1,0 +1,23 @@
+a,
+li {
+    font-style: normal;
+    list-style: none;
+}
+
+.header {
+    min-height: 10vh;
+}
+
+.header,
+nav,
+ul {
+    display: flex;
+    align-items: center;
+    align-content: end;
+    flex-direction: row-reverse;
+}
+
+.header > nav > ul {
+    display: flex;
+    gap: 30px;
+}

@@ -1,3 +1,15 @@
+:root {
+  --primary-color: #5c7da0;
+  --secondary-color: #e3f3c9;
+
+  --primary-color-dark-mode: #010d1a;
+  --secondary-color-dark-mode: #096abe;
+
+  --font-size: 16px;
+  --font-size-accessibility: 24px;
+
+}
+
 
 
 * {
@@ -6,13 +18,22 @@
     padding: 0px;
 }
 
-.list_movies {
-
-    display: flex;
-    flex-wrap: wrap;
+body{
+    box-sizing: border-box;
+    margin: 0px;
+    padding: 0px;
 }
 
-.movie{
-    height: 200px;
-    border: 2px dashed gray ;
+.primary-color {
+    background: var(--primary-color);
 }
+
+.wrapper-container{
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+
+
+
+

@@ -13,7 +13,7 @@ export class UseService {
 
 
     private userSubject = new BehaviorSubject<UserSchema | null>(null);
-    user$ = this.userSubject.asObservable(); // para os componentes observarem
+    user$ = this.userSubject.asObservable();
 
     setUser(user: UserSchema | null) {
     this.userSubject.next(user);

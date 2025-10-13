@@ -7,31 +7,40 @@ import { User } from './pages/user/user';
 import { ManageMovies } from './pages/user/admin/manage-movies/manage-movies';
 import { UserProfile } from './pages/user/user-profile/user-profile';
 import { ManageUsers } from './pages/user/admin/manage-users/manage-users';
+import { NotFound } from './pages/not-found/not-found';
+import { MovieDescriptionComponent } from './components/movie-description-component/movie-description-component';
 
 
 export const routes: Routes = [
     {
         path: '',
-        component: CatalogPage,
+        component: AboutPage,
     },
     {
         path: 'login',
         component: Login,
     },
     {
-        path: 'about',
-        component: AboutPage,
+        path: 'catalog',
+        component: CatalogPage,
+        children: [{
+            path: ':id/movie-description',
+            component: MovieDescriptionComponent
+        }]
     },
     {
         path: 'user',
         component: User,
         children: [
             {path: "user-profile", component: UserProfile},
-            {path: "all-movies", component: CatalogPage},
+            {path: "all-movies", component: CatalogPage, children:[
+                {path: ':id/movie-description', component:MovieDescriptionComponent}
+            ]},
 
 
             { path: 'manage-movies', component: ManageMovies },
             { path: 'manage-users', component: ManageUsers },
         ],
     },
+    {path: "**", component: NotFound}
 ];

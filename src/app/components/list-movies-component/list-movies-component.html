@@ -1,7 +1,7 @@
 <div class="movies">
-    @for (movie of movies; track movie.id) {
-    <div class="movie">
-        <app-movie-component class="movie" [movie]="movie"></app-movie-component>
+
+    <div *ngFor="let movie of movies"  class="movie">
+        <app-movie-component [movie]="movie"></app-movie-component>
     </div>
-    }
+
 </div>
