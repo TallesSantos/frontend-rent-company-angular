@@ -18,13 +18,12 @@ export function createSoapEnvelope(method: string, body: string = '') {
 export function createSoapBody(listBodyJson: SoapRequestBodySchema[]) {
     let property = '';
 
+
+
     for (let i = 0; i < listBodyJson.length; i++) {
         property += `<arg${i}>`;
 
         for (let j = 0; j < listBodyJson[i].properties.length; j++) {
-            console.log(listBodyJson[i].properties[j].propertyName);
-            console.log(listBodyJson[i].properties[j].propertyValue);
-
             property += `<${listBodyJson[i].properties[j].propertyName}>
                 ${listBodyJson[i].properties[j].propertyValue}
             </${listBodyJson[i].properties[j].propertyName}>`;

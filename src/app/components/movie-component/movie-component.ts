@@ -7,11 +7,12 @@ import { UserSchema } from '../../../models/user-schema';
 import { UseService } from '../../services/user-service/use-service';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { CommentComponent } from '../comment-component/comment-component';
 
 @Component({
     selector: 'app-movie-component',
     standalone: true,
-    imports: [FormsModule, RouterLink, CommonModule],
+    imports: [FormsModule, RouterLink, CommonModule, CommentComponent],
     templateUrl: './movie-component.html',
     styleUrls: ['./movie-component.css'],
 })
@@ -25,6 +26,12 @@ export class MovieComponent implements OnInit {
     public id!: number;
     public name = '';
     public description = '';
+
+    showComments = false;
+
+    toggleComments() {
+        this.showComments = !this.showComments;
+    }
 
     ngOnInit(): void {
         this.user = this.userService.getUser();
@@ -86,7 +93,7 @@ export class MovieComponent implements OnInit {
     }
 
     userIsNotNull() {
-        if (this.user !== null &&  this.user?.id !== undefined) {
+        if (this.user !== null && this.user?.id !== undefined) {
             return true;
         }
         return false;
@@ -105,29 +112,20 @@ export class MovieComponent implements OnInit {
         return false;
     }
 
-    printUser(){
-        console.log(this.user)
+    getClientId() {
+        return this.user?.client?.id;
     }
 
-
-    printMovie(movie: MovieSchema){
-        console.log(movie)
-    }
-
-    getClientId(){
-        return this.user?.client?.id
-    }
-
-    movieIsRented(movie: MovieSchema ){
-        if(movie.is_rent){
-            return true
+    movieIsRented(movie: MovieSchema) {
+        if (movie.is_rent) {
+            return true;
         }
-        return false
+        return false;
     }
-    movieRentedByCurrentUser(movie: MovieSchema){
-        if(movie.client){
-            return true
+    movieRentedByCurrentUser(movie: MovieSchema) {
+        if (movie.client) {
+            return true;
         }
-        return false
+        return false;
     }
 }

@@ -25,7 +25,6 @@ export class Login {
     this.userService.login(username, password).subscribe({
       next: (resp:UserSchema) => {
         if(resp){
-            console.log('usuario logado');
             this.userService.setUser(resp);
             this.router.navigate(['user']);
         }

@@ -8,5 +8,6 @@ export interface MovieSchema {
   rent_date?: string;
   client?:ClientSchema | null
   image_url?:string;
-  nameOfLikers?:string[]
+  nameOfLikers?:string[];
+  comments?: CommentSchema[]
 }

@@ -1,0 +1,24 @@
+<div class="comment-container">
+    <ng-content></ng-content>
+
+    @if(comment !== null){
+    <p>text: {{ comment.commentText }}</p>
+    <p>likes: {{ comment.nameOfLikers?.length }}</p>
+
+    @if(comment?.children?.length !== 0){
+         <p>comments: {{comment?.children?.length}}</p>
+         <button (click)="toggleChildrenComments()">Children comments:</button>
+    }
+
+
+    @for(children of comment.children; let i = $index; track comment.children){
+    <div>
+
+        <div  class="comment" [style.margin]="computedWidth" *ngIf="showChildrenComments" class="toggle_children_comments" [level]="level + 1" app-comment-component [comment]="children">
+            <p>level: {{level}}</p>
+            <p><strong>Comentario filho</strong></p>
+        </div>
+    </div>
+
+    } }
+</div>
