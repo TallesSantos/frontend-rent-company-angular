@@ -18,6 +18,12 @@ export class CommentComponent {
         this.showChildrenComments = !this.showChildrenComments;
     }
 
+
+    get computedBgColor(): string {
+        const bgColor = this.level % 2 != 0?"#DDD": "#FFF";
+        return `${bgColor}`;
+    }
+
     get computedWidth(): string {
         const margin = this.level+5;
         return `${margin}px`;

@@ -6,4 +6,16 @@
     <p>login: <input type="text" [(ngModel)]="username" /></p>
     <p>password: <input type="password" [(ngModel)]="password" /></p>
     <button (click)="requestLogin(username, password)">login</button>
+       <button (click)="openSignUp()">Abrir Modal</button>
+
+    <ng-template #conteudoModal>
+      <h2>Signup</h2>
+      <form (submit)="saveClient($event)">
+        <label>Nome:</label>
+        <input type="text" name="nome" [(ngModel)]="nome" />
+        <br /><br />
+        <button type="submit">Salvar</button>
+      </form>
+    </ng-template>
+
  </div>

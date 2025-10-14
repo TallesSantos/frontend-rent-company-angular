@@ -1,0 +1,13 @@
+<div
+  class="modal-backdrop"
+  *ngIf="modalService.isOpen$ | async"
+  (click)="close()"
+></div>
+
+<div class="modal-container" *ngIf="modalService.isOpen$ | async">
+  <div class="modal-content">
+    <ng-container *ngIf="modalService.content$ | async as content">
+      <ng-container *ngTemplateOutlet="content"></ng-container>
+    </ng-container>
+  </div>
+</div>
