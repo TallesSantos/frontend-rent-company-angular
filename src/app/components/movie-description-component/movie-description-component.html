@@ -1,1 +1,41 @@
-<p>movie-description-component works!</p>
+<div class="movie_description">
+    <div class="movie_description_left">
+        <p>
+            <strong>{{ movie?.name }}</strong>
+        </p>
+
+        <img class="image_description" [src]="movie?.image_url" (error)="fallback($event)" alt="" />
+        <p>
+            {{ movie?.description }}
+        </p>
+
+        @if(userIsClientAndMovieIsNotNull() && movieHasLikes()){ @for(likerName of
+        movie?.nameOfLikers;track likerName){
+        <p>{{ likerName }}</p>
+
+        } }
+    </div>
+
+    @if(userIsClientAndMovieIsNotNull() && movieHasComments()){
+    <div class="movie_description_right">
+        <div>
+        @if(movie?.comments!== undefined && movie?.comments?.length ){
+        <p>comments: {{ movie?.comments?.length }}</p>
+        <button (click)="toggleComments()">Comments:</button>
+
+        } @if (showComments) { @for(comment of movie?.comments;track comment.id){
+        <div app-comment-component [comment]="comment">
+            <p><strong>Comentario root </strong></p>
+        </div>
+        }
+        <button>criar commentario</button>
+        }
+        </div>
+    </div>
+
+    } @else{
+    <div class="movie_description_right">
+        <p>You need to be logged to see comments and likes</p>
+    </div>
+    }
+</div>

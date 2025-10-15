@@ -1,4 +1,4 @@
-import { SoapRequestBodyParam } from './../../../models/request/xml-request-model';
+import { SoapRequestBodyParam } from '../../models/request/xml-request-model';
 
 export function createSoapEnvelope(method: string, body: string = '') {
     return `

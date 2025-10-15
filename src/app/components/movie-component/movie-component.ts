@@ -5,7 +5,7 @@ import { MovieService } from '../../services/movie-service/movie-service';
 import { FormsModule } from '@angular/forms';
 import { UserSchema } from '../../../models/user-schema';
 import { UseService } from '../../services/user-service/use-service';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CommentComponent } from '../comment-component/comment-component';
 
@@ -17,7 +17,11 @@ import { CommentComponent } from '../comment-component/comment-component';
     styleUrls: ['./movie-component.css'],
 })
 export class MovieComponent implements OnInit {
-    constructor(private movieService: MovieService, private userService: UseService) {}
+    constructor(
+        private movieService: MovieService,
+        private userService: UseService,
+        private router: Router
+    ) {}
 
     @Input() movie!: MovieSchema;
 
@@ -26,12 +30,7 @@ export class MovieComponent implements OnInit {
     public id!: number;
     public name = '';
     public description = '';
-
-    showComments = false;
-
-    toggleComments() {
-        this.showComments = !this.showComments;
-    }
+    public imageUrl = '';
 
     ngOnInit(): void {
         this.user = this.userService.getUser();
@@ -117,15 +116,28 @@ export class MovieComponent implements OnInit {
     }
 
     movieIsRented(movie: MovieSchema) {
+        console.log(movie)
         if (movie.is_rent) {
             return true;
         }
         return false;
     }
     movieRentedByCurrentUser(movie: MovieSchema) {
-        if (movie.client) {
+        if (movie.client?.id == this.user?.client?.id) {
             return true;
         }
         return false;
+    }
+
+    redirectToDescriptionPage() {
+        if (this.userIsClient()) {
+            this.router.navigate([`/user/all-movies/${this.movie.id}/movie-description`], {
+                state: { movie: this.movie },
+            });
+        } else {
+            this.router.navigate([`/catalog/${this.movie.id}/movie-description`], {
+                state: { movie: this.movie },
+            });
+        }
     }
 }

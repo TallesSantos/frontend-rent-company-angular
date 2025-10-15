@@ -1,9 +1,30 @@
-<div>
-<p>add movie</p>
-<label>name:</label><input type="text" [(ngModel)]="name" />
-<label>description</label><input type="text" [(ngModel)]="description" />
-<button (click)="createMovie(name, description)">confirm</button>
-</div>
+<div class="content_page_container">
+    <h1>Movie Manager</h1>
+
+    <button (click)="openModalAddMovie()">Add movie</button>
+
+    <ng-template #modalContent>
+        <h2>Add movie</h2>
+        <form (submit)="requestAddMovie($event)">
+            <div>
+                <label for="name">Name: </label>
+                <input type="text" name="name" [(ngModel)]="AddMovieData.name" />
+            </div>
+
+            <div>
+                <label for="imageUrl">Image url: </label>
+                <input type="text" name="imageUrl" [(ngModel)]="AddMovieData.imageUrl" />
+            </div>
+                <div>
+                <label for="description">Description: </label>
+                <textarea  name="description" [(ngModel)]="AddMovieData.description"></textarea>
+            </div>
+
+            <button type="submit">Add movie</button>
+        </form>
+    </ng-template>
+
 
 <h1>All movies:</h1>
 <app-list-movies-component></app-list-movies-component>
+</div>

@@ -2,6 +2,8 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { UserSchema } from '../../../models/user-schema';
+import { SignInRequestSchema } from '../../../models/request/sign-up-request-schema';
+import { AddAddressRequest } from '../../../models/request/AddAddressRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +29,14 @@ export class UseService {
 
     login(username:string, password:string):Observable<UserSchema>{
         return this.http.post<UserSchema>(this.apiUsers + "/login", {username, password}, {})
+    }
+
+    signUp(request: SignInRequestSchema){
+          return this.http.post<UserSchema>(this.apiUsers + "/sign-up", request, {})
+    }
+
+    addAddress(request: AddAddressRequest){
+        return this.http.post<UserSchema>(this.apiUsers + `/${this.getUser()?.id}/addresses`, request, {})
     }
 
 }

@@ -10,7 +10,6 @@ import { ManageUsers } from './pages/user/admin/manage-users/manage-users';
 import { NotFound } from './pages/not-found/not-found';
 import { MovieDescriptionComponent } from './components/movie-description-component/movie-description-component';
 
-
 export const routes: Routes = [
     {
         path: '',
@@ -23,24 +22,24 @@ export const routes: Routes = [
     {
         path: 'catalog',
         component: CatalogPage,
-        children: [{
-            path: ':id/movie-description',
-            component: MovieDescriptionComponent
-        }]
+    },
+    {
+        path: 'catalog/:id/movie-description',
+        component: MovieDescriptionComponent,
     },
     {
         path: 'user',
         component: User,
         children: [
-            {path: "user-profile", component: UserProfile},
-            {path: "all-movies", component: CatalogPage, children:[
-                {path: ':id/movie-description', component:MovieDescriptionComponent}
-            ]},
+            //Client rotes
+            { path: 'user-profile', component: UserProfile },
+            { path: 'all-movies', component: CatalogPage },
+            { path: 'all-movies/:id/movie-description', component: MovieDescriptionComponent },
 
-
+            //admin rotes
             { path: 'manage-movies', component: ManageMovies },
             { path: 'manage-users', component: ManageUsers },
         ],
     },
-    {path: "**", component: NotFound}
+    { path: '**', component: NotFound },
 ];

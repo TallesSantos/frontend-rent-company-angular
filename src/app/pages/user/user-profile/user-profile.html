@@ -5,8 +5,61 @@
     <div class="container">
         <div class="container-item">
             <div class="property_panel">
-                <button class="add_property">Add address</button>
+
                 <h1>Address menu</h1>
+
+                <button (click)="openModalSignUp()">Add address</button>
+                <ng-template #modalContent>
+                    <h2>Add address</h2>
+                    <form (submit)="requestAddAddress($event)">
+                        <div class="form_item">
+                            <label for="country" class="required_form_item">Country: </label>
+                            <input
+                                type="text"
+                                name="country"
+                                [(ngModel)]="addAddressRequest.country"
+                            />
+                        </div>
+                        <div class="form_item">
+                            <label for="state">State: </label>
+                            <input type="text" name="state" [(ngModel)]="addAddressRequest.state" />
+                        </div>
+
+                        <div class="form_item">
+                            <label for="city" class="required_form_item">City: </label>
+                            <input type="text" name="city" [(ngModel)]="addAddressRequest.city" />
+                        </div>
+                        <div class="form_item">
+                            <label for="streetAddress">StreetAddress: </label>
+                            <input
+                                type="text"
+                                name="streetAddress"
+                                [(ngModel)]="addAddressRequest.streetAddress"
+                            />
+                        </div>
+
+                        <div class="form_item">
+                            <label for="number" class="required_form_item">Number: </label>
+                            <input
+                                type="text"
+                                name="number"
+                                [(ngModel)]="addAddressRequest.number"
+                            />
+                        </div>
+
+                        <div class="form_item">
+                            <label for="comment" class="required_form_item">Comment: </label>
+                            <input
+                                type="password"
+                                name="comment"
+                                [(ngModel)]="addAddressRequest.comment"
+                            />
+                        </div>
+
+                        <button type="submit">Sign up</button>
+                    </form>
+                </ng-template>
+
                 @if(user?.addresses !== null){ @for(address of user?.addresses; let i = $index;
                 track address.city){
                 <div class="property">
@@ -49,7 +102,7 @@
             </div>
         </div>
         } @if(user?.userType === "CLIENT"){
-            <p>TODO: listar todos os filmes que o usuário tem alugado ou notificações para ele</p>
+        <p>TODO: listar todos os filmes que o usuário tem alugado ou notificações para ele</p>
 
         }
     </div>

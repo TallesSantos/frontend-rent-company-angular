@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { MovieSchema } from '../../../models/movie-schema';
-import { createSoapBody, createSoapEnvelope } from '../utils/soap-util';
-import { createMovieSchema } from './movie-helpers';
+import { createSoapBody, createSoapEnvelope } from '../soap-util';
+import { createMovieSchema } from '../movie-util';
 
 @Injectable({
     providedIn: 'root',
@@ -52,12 +52,13 @@ export class MovieService {
             );
     }
 
-    createMovie(name: string, description: string): Observable<string> {
+    createMovie(name: string, description: string, imageUrl: string): Observable<string> {
         const body = createSoapBody([
             {
                 properties: [
                     `<name> ${name}</name> `,
                     `<description> ${description}</description> `,
+                     `<imageUrl> ${imageUrl}</imageUrl> `,
                 ],
             },
         ]);
@@ -75,6 +76,10 @@ export class MovieService {
         }
         if (request.description) {
             requestProperties.push(`<description>${request.description}</description>`);
+        }
+
+         if (request.image_url) {
+            requestProperties.push(`<imageUrl>${request.image_url}</imageUrl>`);
         }
 
         const body = createSoapBody([

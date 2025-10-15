@@ -4,7 +4,7 @@ import { UseService } from '../../services/user-service/use-service';
 import { UserSchema } from '../../../models/user-schema';
 
 @Component({
-  selector: 'app-catalog-page',
+  selector: 'div[app-catalog-page]',
   imports: [ListMoviesComponent],
   templateUrl: './catalog-page.html',
   styleUrl: './catalog-page.css'

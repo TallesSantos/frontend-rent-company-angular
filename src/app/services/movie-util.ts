@@ -1,4 +1,4 @@
-import { MovieSchema } from "../../../models/movie-schema";
+import { MovieSchema } from "../../models/movie-schema";
 
    export function createCommentSchema(comments: NodeListOf<Element>) {
         const commentsResponse: CommentSchema[] = [];
@@ -6,6 +6,10 @@ import { MovieSchema } from "../../../models/movie-schema";
             const commentId = Number(element.querySelector(':scope > id')?.textContent);
 
             const commentText = element.querySelector(':scope > commentText')?.textContent;
+
+            const ownerName = element.querySelector(':scope > ownerName')?.textContent;
+
+            const publishedAt = element.querySelector(':scope > publishedAt')?.textContent;
 
             const commentLikes: string[] = [];
 
@@ -22,6 +26,8 @@ import { MovieSchema } from "../../../models/movie-schema";
                 commentText: commentText!,
                 nameOfLikers: commentLikes,
                 children: commentsChildren,
+                ownerName: ownerName?ownerName:"Anonymous",
+                publishedAt: publishedAt
             };
             commentsResponse.push(comment);
         });

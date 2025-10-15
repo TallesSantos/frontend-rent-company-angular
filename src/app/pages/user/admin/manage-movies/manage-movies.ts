@@ -1,6 +1,7 @@
+import { ModalService } from './../../../../services/modal-service/modal-service';
 import { FormsModule } from '@angular/forms';
 import { MovieService } from './../../../../services/movie-service/movie-service';
-import { Component } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { ListMoviesComponent } from '../../../../components/list-movies-component/list-movies-component';
 
 @Component({
@@ -10,12 +11,17 @@ import { ListMoviesComponent } from '../../../../components/list-movies-componen
     styleUrl: './manage-movies.css',
 })
 export class ManageMovies {
-    constructor(private movieService: MovieService) {}
+    @ViewChild('modalContent') modalContent!: TemplateRef<any>;
 
-    protected name: string = "";
-    protected description: string = "";
-    createMovie(name: string, description: string) {
-        this.movieService.createMovie(name, description).subscribe({
+    constructor(private movieService: MovieService, private modalService: ModalService) {}
+
+    protected AddMovieData = {
+        name: '',
+        description: '',
+        imageUrl: '',
+    };
+    createMovie(name: string, description: string, imageUrl: string) {
+        this.movieService.createMovie(name, description, imageUrl).subscribe({
             next: () => {
                 console.log('Filme criado com sucesso');
                 this.movieService.triggerReloadListOfMovies();
@@ -24,5 +30,24 @@ export class ManageMovies {
                 console.error('Erro ao criar o filme:', err);
             },
         });
+    }
+
+    openModalAddMovie() {
+        this.modalService.open(this.modalContent);
+    }
+
+    requestAddMovie(event: Event) {
+        event.preventDefault();
+        this.movieService.createMovie(this.AddMovieData.name, this.AddMovieData.description,this.AddMovieData.imageUrl).subscribe({
+            next: () => {
+                console.log('Filme criado com sucesso');
+                this.movieService.triggerReloadListOfMovies();
+            },
+            error: (err) => {
+                console.error('Erro ao criar o filme:', err);
+            },
+        });
+
+        this.modalService.close();
     }
 }

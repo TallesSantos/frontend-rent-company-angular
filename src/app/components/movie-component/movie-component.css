@@ -1,5 +1,15 @@
+.movie {
+    height: 100%;
+    width: 200px;
+    box-sizing: border-box;
+    padding: 15px;
+    text-align: center;
+    margin-bottom: 10px;
+    border: dashed 2px gray;
+}
+
 img {
-    height: 100px;
+    max-width: 100px;
 }
 
 .rented_by_user {
@@ -8,4 +18,8 @@ img {
 
 .not_avaliable {
     color: red;
+}
+
+.link {
+    cursor: pointer;
 }

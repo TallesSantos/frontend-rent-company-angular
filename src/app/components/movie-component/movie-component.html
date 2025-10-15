@@ -1,21 +1,31 @@
 <div class="movie">
     <div>
-        <a routerLink="/qualquer-lugar">access description</a>
-        <p>
-            <strong>{{ movie.name }}</strong>
-
+        <p style="display: flex; flex-direction: column;">
+            <strong class="link" (click)="redirectToDescriptionPage()">{{ movie.name }}</strong>
             @if(userIsAdmin()){
             <strong>Edit:</strong><input [(ngModel)]="name" type="text" />
             }
         </p>
 
-        <p>
+
+        <div>
+            @if(userIsAdmin()){
+            <strong>Edit image-url: <input [(ngModel)]="imageUrl" type="text" /></strong>
+            }
+              <img
+                class="link"
+                (click)="redirectToDescriptionPage()"
+                [src]="movie.image_url?.trim()"
+                (error)="fallback($event)"
+                alt=""
+            />
+        </div>
+          <p style="display: flex;flex-direction: column">
             {{ movie?.description }}
             @if(userIsAdmin()){
             <strong>Edit:</strong><input [(ngModel)]="description" type="text" />
             }
         </p>
-        <img [src]="movie.image_url" (error)="fallback($event)" alt="" />
 
         @if(movie !== null && movie?.client !== null && user !== null){ @if (userIsAdmin()) {
         <div class="rent_client">
@@ -37,16 +47,5 @@
     } @else {
     <p class="avaliable">Available</p>
     <button (click)="rentMovie(movie.id)">rent movie</button>
-    } } @if(user?.userType =="CLIENT"){ @for(likerName of movie.nameOfLikers;track likerName){
-    <p>{{ likerName }}</p>
-    } @if(movie.comments!== undefined && movie.comments.length > 0 ){
-    <p>comments: {{ movie.comments?.length }}</p>
-    <button (click)="toggleComments()">Comments:</button>
-
-    } @if (showComments && movie.comments!== null) { @for(comment of movie.comments;track
-    comment.id){
-    <div app-comment-component [comment]="comment">
-        <p><strong>Comentario root </strong></p>
-    </div>
-    } } }
+    } }
 </div>

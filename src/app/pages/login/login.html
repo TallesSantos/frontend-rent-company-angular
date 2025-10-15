@@ -1,21 +1,66 @@
- <div>
-    <div class="error_panel">
-        <p>{{error}}</p>
+<div class="content_page_container">
+    <div class="login_content">
+        <div class="message_panel">
+            <p class="error_message">{{ errorMessage }}</p>
+        </div>
+        <label for="username"> Username: </label>
+        <input type="text" id="username" name="username" [(ngModel)]="username" />
 
+        <label for="password"> Password: </label>
+        <input type="password" [(ngModel)]="password" />
+
+        <button (click)="requestLogin(username, password)">Login</button>
+        <button (click)="openModalSignUp()">Sign up</button>
     </div>
-    <p>login: <input type="text" [(ngModel)]="username" /></p>
-    <p>password: <input type="password" [(ngModel)]="password" /></p>
-    <button (click)="requestLogin(username, password)">login</button>
-       <button (click)="openSignUp()">Abrir Modal</button>
+    <ng-template #modalContent>
+        <h2>Sign up</h2>
 
-    <ng-template #conteudoModal>
-      <h2>Signup</h2>
-      <form (submit)="saveClient($event)">
-        <label>Nome:</label>
-        <input type="text" name="nome" [(ngModel)]="nome" />
-        <br /><br />
-        <button type="submit">Salvar</button>
-      </form>
+        <div>
+            <p>{{ errorModalMessage.message }}</p>
+
+            @for(error of errorModalMessage.errors; let i = $index; track i){
+            <p class="error_message">{{ error }}</p>
+            }
+        </div>
+
+        <form (submit)="requestSignUp($event)">
+            <div class="form_item">
+                <label for="full_name" class="required_form_item">Full name: </label>
+                <input type="text" name="full_name" [(ngModel)]="signInClient.fullName" />
+            </div>
+            <div class="form_item">
+                <label for="nickName">Nickname: </label>
+                <input type="text" name="nickName" [(ngModel)]="signInClient.nickName" />
+            </div>
+
+            <div class="form_item">
+                <label for="email" class="required_form_item">Email: </label>
+                <input type="text" name="email" [(ngModel)]="signInClient.email" />
+            </div>
+            <div class="form_item">
+                <label for="documentNumber">Document number: </label>
+                <input type="text" name="email" [(ngModel)]="signInClient.documentNumber" />
+            </div>
+
+            <div class="form_item">
+                <label for="username" class="required_form_item">Username: </label>
+                <input type="text" name="email" [(ngModel)]="signInClient.username" />
+            </div>
+
+            <div class="form_item">
+                <label for="password" class="required_form_item">Password: </label>
+                <input type="password" name="password" [(ngModel)]="signInClient.password" />
+            </div>
+            <div class="form_item">
+                <label for="confirmPassword" class="required_form_item">Confirm password: </label>
+                <input
+                    type="confirmPassword"
+                    name="confirmPassword"
+                    [(ngModel)]="signInClient.confirmPassword"
+                />
+            </div>
+
+            <button type="submit">Sign up</button>
+        </form>
     </ng-template>
-
- </div>
+</div>

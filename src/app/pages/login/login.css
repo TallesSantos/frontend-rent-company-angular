@@ -1,3 +1,9 @@
-.error_panel {
+.login_content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.error_message {
     color:red
 }

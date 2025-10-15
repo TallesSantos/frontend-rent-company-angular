@@ -33,6 +33,26 @@ body{
     padding-right: 50px;
 }
 
+.content_page_container {
+    padding: 100px;
+    gap: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.form_item {
+    display: flex;
+    flex-direction: column;
+}
+
+.form_item > .required_form_item::after {
+  content: " *";
+  color: red;
+}
+
 
 
 
