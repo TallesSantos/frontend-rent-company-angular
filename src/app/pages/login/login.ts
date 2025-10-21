@@ -57,15 +57,17 @@ export class Login {
                     this.userService.getUserOfToken().subscribe({
                         next: (resp: UserSchema) => {
                             this.userService.setUser(resp);
+                            if(resp.userType === "CLIENT"){
+                                this.router.navigate(['user/all-movies']);
+                            }else{
+                                this.router.navigate(['user/manage-movies']);
+                            }
+
                         },
                         error: (err) => {
                               console.error('Erro ao tentar buscar usuario', err);
                         },
                     });
-
-                    console.log(resp);
-                    this.userService.setUser(null);
-                    this.router.navigate(['user']);
                 }
             },
             error: (err) => {

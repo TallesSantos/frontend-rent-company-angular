@@ -36,8 +36,4 @@ export class RentHistory implements OnInit {
     getRentHistory() {
         return this.rentHistory;
     }
-
-    showRentHistory() {
-        console.log(this.rentHistory);
-    }
 }

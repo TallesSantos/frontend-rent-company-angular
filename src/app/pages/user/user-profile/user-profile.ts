@@ -57,7 +57,7 @@ export class UserProfile implements OnInit {
             .subscribe({
                 next: (user: UserSchema) => {
                     this.userService.setUser(user);
-                    console.log('user', this.userService.getUser())
+
                 },
                 error: (err: any) => {
                     console.error('Erro ao carregar filmes:', err);

@@ -50,7 +50,6 @@ export class UseService {
     }
 
     getToken(): string {
-        console.log('current token', this.token);
         return this.token;
     }
 
@@ -97,7 +96,7 @@ export class UseService {
 
     addPhone(request: Omit<PhoneRequest, 'id'>): Observable<void> {
         return this.http
-            .post<void>(`${this.API_USERS.substring}/current-user/phones`, request, {
+            .post<void>(`${this.API_USERS}/current-user/phones`, request, {
                 headers: { Authorization: `Bearer ${this.getToken()}` },
             })
             .pipe(
