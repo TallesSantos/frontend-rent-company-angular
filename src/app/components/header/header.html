@@ -9,7 +9,7 @@
             <li><a routerLink="/user/user-profile">User profile</a></li>
             @if(getUser()?.userType === "CLIENT"){
             <li><a routerLink="/user/all-movies">All movies</a></li>
-            <li><a routerLink="/user/rented-movies">Rent history</a></li>
+            <li><a routerLink="/user/rented-history">Rent history</a></li>
             } @if(getUser()?.userType === "ADMIN"){
             <li><a routerLink="/user/manage-movies">Manage movies</a></li>
             <li><a routerLink="/user/manage-users">Manage users</a></li>

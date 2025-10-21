@@ -1,109 +1,184 @@
-<div>
-    <p>Id: {{ user?.id }}</p>
-    <p>name: {{ user?.name }}</p>
-    <p>email: {{ user?.email }}</p>
-    <div class="container">
-        <div class="container-item">
-            <div class="property_panel">
-
+<div class="content_page_container" style="align-items: start">
+    <div>
+        <p>Id: {{ userService.getUser()?.id }}</p>
+        <p>Name: {{ userService.getUser()?.name }}</p>
+        <p>Email: {{ userService.getUser()?.email }}</p>
+        <div class="container">
+            <div>
                 <h1>Address menu</h1>
 
-                <button (click)="openModalSignUp()">Add address</button>
-                <ng-template #modalContent>
-                    <h2>Add address</h2>
-                    <form (submit)="requestAddAddress($event)">
-                        <div class="form_item">
-                            <label for="country" class="required_form_item">Country: </label>
-                            <input
-                                type="text"
-                                name="country"
-                                [(ngModel)]="addAddressRequest.country"
-                            />
+                <div class="box">
+                    @if(userService.getUser()?.addresses === null ||
+                    userService.getUser()?.addresses?.length === 0){
+                    <p>User not has addresses number</p>
+                    }@else{ @for(address of userService.getUser()?.addresses; let i = $index; track
+                    address.id){
+                    <div class="item">
+                        <p>Address {{ i + 1 }}</p>
+                        <p>country: {{ address?.country }}</p>
+                        <p>state: {{ address?.state }}</p>
+                        <p>city: {{ address?.city }}</p>
+                        <p>streetAddress: {{ address?.streetAddress }}</p>
+                        <p>Number: {{ address?.number }}</p>
+                        <p>Comment: {{ address?.comment }}</p>
+                        <div>
+                            <button
+                                (click)="
+                                    updateAddressRequest.id = address.id; openModalUpdateAddress()
+                                "
+                            >
+                                update address
+                            </button>
+                            <button
+                                (click)="
+                                    requestRemoveAddress(address.id)
+                                "
+                            >
+                                Remove address
+                            </button>
                         </div>
-                        <div class="form_item">
-                            <label for="state">State: </label>
-                            <input type="text" name="state" [(ngModel)]="addAddressRequest.state" />
-                        </div>
-
-                        <div class="form_item">
-                            <label for="city" class="required_form_item">City: </label>
-                            <input type="text" name="city" [(ngModel)]="addAddressRequest.city" />
-                        </div>
-                        <div class="form_item">
-                            <label for="streetAddress">StreetAddress: </label>
-                            <input
-                                type="text"
-                                name="streetAddress"
-                                [(ngModel)]="addAddressRequest.streetAddress"
-                            />
-                        </div>
-
-                        <div class="form_item">
-                            <label for="number" class="required_form_item">Number: </label>
-                            <input
-                                type="text"
-                                name="number"
-                                [(ngModel)]="addAddressRequest.number"
-                            />
-                        </div>
-
-                        <div class="form_item">
-                            <label for="comment" class="required_form_item">Comment: </label>
-                            <input
-                                type="password"
-                                name="comment"
-                                [(ngModel)]="addAddressRequest.comment"
-                            />
-                        </div>
-
-                        <button type="submit">Sign up</button>
-                    </form>
-                </ng-template>
-
-                @if(user?.addresses !== null){ @for(address of user?.addresses; let i = $index;
-                track address.city){
-                <div class="property">
-                    <p>Address {{ i + 1 }}</p>
-                    <p>country: {{ address?.country }}</p>
-                    <p>state: {{ address?.state }}</p>
-                    <p>city: {{ address?.city }}</p>
-                    <p>streetAddress: {{ address?.streetAddress }}</p>
-                    <p>Number: {{ address?.number }}</p>
-                    <p>Comment: {{ address?.comment }}</p>
-                </div>
-                } }
-            </div>
-
-            <div class="property_panel">
-                <button class="add_property">Add Phone</button>
-                <h1>Phone menu</h1>
-
-                @if(user?.phone !== null){ @for(phone of user?.phone; let i = $index; track
-                phone.phoneNumber){
-                <div class="property">
-                    <p>Phone {{ i + 1 }}</p>
-                    <p>{{ phone?.phoneNumber }}</p>
-                </div>
-                } }
-            </div>
-        </div>
-        @if(user?.userType === "ADMIN"){
-        <div class="container-item">
-            <div class="property_panel">
-                <h1>Permission menu</h1>
-                <div class="property_panel">
-                    @if(user?.permissionRoles !== null){ @for(permission of user?.permissionRoles;
-                    track permission.id){
-                    <div>
-                        <p>{{ permission?.name }}</p>
                     </div>
                     } }
+                    <button (click)="openModalAddAddress()">Add address</button>
+                </div>
+            </div>
+
+            <div>
+                <h1>Phone menu</h1>
+
+                <div class="box">
+                    @if(userService.getUser()?.phone === null ||
+                    userService.getUser()?.phone?.length === 0){
+                    <p>User not has phone number</p>
+                    }@else{ @for(phone of userService.getUser()?.phone; let i = $index; track i){
+                    <div class="item">
+                        <p>Phone {{ i + 1 }}</p>
+                        <p>{{ phone?.phoneNumber }}</p>
+                        <div>
+                            <button
+                                (click)="updatePhoneRequest.id = phone.id; openModalUpdatePhone()"
+                            >
+                                Update phone
+                            </button>
+                            <button
+                                (click)="
+                                    updatePhoneRequest.id = phone.id; requestRemovePhone(phone.id)
+                                "
+                            >
+                                Remove phone
+                            </button>
+                        </div>
+                    </div>
+                    } }
+                    <button (click)="openModalAddPhone()">Add Phone</button>
                 </div>
             </div>
         </div>
-        } @if(user?.userType === "CLIENT"){
-        <p>TODO: listar todos os filmes que o usuário tem alugado ou notificações para ele</p>
-
-        }
     </div>
 </div>
+
+<ng-template #modalAddAddress>
+    <h2>Add address</h2>
+    <form (submit)="requestAddAddress($event)">
+        <div class="form_item">
+            <label for="country" class="required_form_item">Country: </label>
+            <input type="text" name="country" [(ngModel)]="addAddressRequest.country" />
+        </div>
+        <div class="form_item">
+            <label for="state">State: </label>
+            <input type="text" name="state" [(ngModel)]="addAddressRequest.state" />
+        </div>
+
+        <div class="form_item">
+            <label for="city" class="required_form_item">City: </label>
+            <input type="text" name="city" [(ngModel)]="addAddressRequest.city" />
+        </div>
+        <div class="form_item">
+            <label for="streetAddress">StreetAddress: </label>
+            <input type="text" name="streetAddress" [(ngModel)]="addAddressRequest.streetAddress" />
+        </div>
+
+        <div class="form_item">
+            <label for="number" class="required_form_item">Number: </label>
+            <input type="text" name="number" [(ngModel)]="addAddressRequest.number" />
+        </div>
+
+        <div class="form_item">
+            <label for="comment" class="required_form_item">Comment: </label>
+            <input type="password" name="comment" [(ngModel)]="addAddressRequest.comment" />
+        </div>
+
+        <button type="submit">Sign up</button>
+    </form>
+</ng-template>
+
+<ng-template #modalUpdateAddress>
+    <h2>Update address</h2>
+    <form (submit)="requestAddAddress($event)">
+        <div class="form_item">
+            <label for="update_country" class="required_form_item">Country: </label>
+            <input type="text" name="update_country" [(ngModel)]="updateAddressRequest.country" />
+        </div>
+        <div class="form_item">
+            <label for="update_state">State: </label>
+            <input type="text" name="update_state" [(ngModel)]="updateAddressRequest.state" />
+        </div>
+
+        <div class="form_item">
+            <label for="update_city" class="required_form_item">City: </label>
+            <input type="text" name="update_city" [(ngModel)]="updateAddressRequest.city" />
+        </div>
+        <div class="form_item">
+            <label for="update_streetAddress">StreetAddress: </label>
+            <input
+                type="text"
+                name="update_streetAddress"
+                [(ngModel)]="updateAddressRequest.streetAddress"
+            />
+        </div>
+
+        <div class="form_item">
+            <label for="update_number" class="required_form_item">Number: </label>
+            <input type="text" name="update_number" [(ngModel)]="updateAddressRequest.number" />
+        </div>
+
+        <div class="form_item">
+            <label for="update_comment" class="required_form_item">Comment: </label>
+            <input
+                type="password"
+                name="update_comment"
+                [(ngModel)]="updateAddressRequest.comment"
+            />
+        </div>
+
+        <button type="submit">Update address</button>
+    </form>
+</ng-template>
+
+<ng-template #modalAddPhone>
+    <h2>Add phone</h2>
+    <form (submit)="requestAddPhone($event)">
+        <div class="form_item">
+            <label for="phone_number" class="required_form_item">Phone number: </label>
+            <input type="text" name="phone_number" [(ngModel)]="addAPhoneRequest.phoneNumber" />
+        </div>
+
+        <button type="submit">Add Phone</button>
+    </form>
+</ng-template>
+
+<ng-template #modalUpdatePhone>
+    <h2>update phone</h2>
+    <form (submit)="requestUpdatePhone($event)">
+        <div class="form_item">
+            <label for="update_phone_number" class="required_form_item">Phone number: </label>
+            <input
+                type="text"
+                name="update-phone_number"
+                [(ngModel)]="updatePhoneRequest.phoneNumber"
+            />
+        </div>
+
+        <button type="submit">Update Phone</button>
+    </form>
+</ng-template>

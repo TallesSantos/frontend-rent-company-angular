@@ -5,7 +5,9 @@
 ></div>
 
 <div class="modal-container" *ngIf="modalService.isOpen$ | async">
+    <button (click)="close()" class="close_modal_button">X</button>
   <div class="modal-content">
+
     <ng-container *ngIf="modalService.content$ | async as content">
       <ng-container *ngTemplateOutlet="content"></ng-container>
     </ng-container>

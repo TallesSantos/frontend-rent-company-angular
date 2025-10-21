@@ -1,18 +1,14 @@
+@if(userIsAdmin()){
 <div class="movie">
     <div>
-        <p style="display: flex; flex-direction: column;">
+        <p style="display: flex; flex-direction: column">
             <strong class="link" (click)="redirectToDescriptionPage()">{{ movie.name }}</strong>
-            @if(userIsAdmin()){
+
             <strong>Edit:</strong><input [(ngModel)]="name" type="text" />
-            }
         </p>
-
-
         <div>
-            @if(userIsAdmin()){
             <strong>Edit image-url: <input [(ngModel)]="imageUrl" type="text" /></strong>
-            }
-              <img
+            <img
                 class="link"
                 (click)="redirectToDescriptionPage()"
                 [src]="movie.image_url?.trim()"
@@ -20,26 +16,47 @@
                 alt=""
             />
         </div>
-          <p style="display: flex;flex-direction: column">
+        <p style="display: flex; flex-direction: column">
             {{ movie?.description }}
-            @if(userIsAdmin()){
+
             <strong>Edit:</strong><input [(ngModel)]="description" type="text" />
-            }
         </p>
 
-        @if(movie !== null && movie?.client !== null && user !== null){ @if (userIsAdmin()) {
+        @if(movie !== null && movie?.client !== null && user !== null){
         <div class="rent_client">
             <p>Rent to client: {{ movie.client?.name }}</p>
             <p>Rented: {{ movie.is_rent }}</p>
             <p>Date: {{ movie.rent_date }}</p>
         </div>
 
-        } }
+        }
     </div>
-    @if(userIsAdmin()){
     <button (click)="updateMovie(movie.id, name, description)">update</button>
     <button (click)="removeMovie(movie.id)">remove</button>
-    } @if(user !== null && userIsClient()){ @if(movieRentedByCurrentUser(movie)){
+</div>
+
+} @if(userIsClient()){
+
+<div class="movie">
+    <div>
+        <p style="display: flex; flex-direction: column">
+            <strong class="link" (click)="redirectToDescriptionPage()">{{ movie.name }}</strong>
+        </p>
+
+        <div>
+            <img
+                class="link"
+                (click)="redirectToDescriptionPage()"
+                [src]="movie.image_url?.trim()"
+                (error)="fallback($event)"
+                alt=""
+            />
+        </div>
+        <p style="display: flex; flex-direction: column">
+            {{ movie?.description }}
+        </p>
+    </div>
+    @if(user !== null){ @if(movieRentedByCurrentUser(movie)){
     <p class="rented_by_user">Rented by you</p>
     <button (click)="returnMovie(movie.id)">return movie</button>
     }@else if(movieIsRented(movie)){
@@ -49,3 +66,29 @@
     <button (click)="rentMovie(movie.id)">rent movie</button>
     } }
 </div>
+
+}
+@if (!userIsAdmin() && !userIsClient()) {
+<div class="movie">
+    <div>
+        <p style="display: flex; flex-direction: column">
+            <strong class="link" (click)="redirectToDescriptionPage()">{{ movie.name }}</strong>
+        </p>
+
+        <div>
+
+
+            <img
+                class="link"
+                (click)="redirectToDescriptionPage()"
+                [src]="movie.image_url?.trim()"
+                (error)="fallback($event)"
+                alt=""
+            />
+        </div>
+        <p style="display: flex; flex-direction: column">
+            {{ movie?.description }}
+        </p>
+    </div>
+</div>
+}

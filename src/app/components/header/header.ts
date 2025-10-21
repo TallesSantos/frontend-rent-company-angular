@@ -23,7 +23,8 @@ export class Header {
     }
 
     requestLogoff() {
-        this.userService.setUser(null);
+
+        this.userService.setToken("")
         this.router.navigate(['']);
     }
 }

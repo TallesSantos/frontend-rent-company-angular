@@ -3,7 +3,7 @@ import { UserSchema } from '../../../../models/user-schema';
 import { UseService } from './../../../services/user-service/use-service';
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ModalService } from '../../../services/modal-service/modal-service';
-import { AddAddressRequest } from '../../../../models/request/AddAddressRequest';
+import { AddressRequest, PhoneRequest } from '../../../../models/request/user-profile-request';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -13,50 +13,154 @@ import { FormsModule } from '@angular/forms';
     styleUrl: './user-profile.css',
 })
 export class UserProfile implements OnInit {
-     @ViewChild('modalContent') modalContent!: TemplateRef<any>;
-    protected user!: UserSchema | null;
+    @ViewChild('modalAddAddress') modalAddAddress!: TemplateRef<any>;
+    @ViewChild('modalUpdateAddress') modalUpdateAddress!: TemplateRef<any>;
+    @ViewChild('modalAddPhone') modalAddPhone!: TemplateRef<any>;
+    @ViewChild('modalUpdatePhone') modalUpdatePhone!: TemplateRef<any>;
 
-    protected addAddressRequest: AddAddressRequest ={
-        country:"",
+    protected addAddressRequest: Omit<AddressRequest, 'id'> = {
+        country: '',
+        state: '',
+        city: '',
+        streetAddress: '',
+        number: '',
+        comment: '',
+    };
 
-  state: "",
+    protected updateAddressRequest: AddressRequest = {
+        id: 0,
+        country: '',
+        state: '',
+        city: '',
+        streetAddress: '',
+        number: '',
+        comment: '',
+    };
 
-  city:"",
+    protected addAPhoneRequest: Omit<PhoneRequest, 'id'> = {
+        phoneNumber: '',
+    };
 
-  streetAddress:"",
+    protected updatePhoneRequest: PhoneRequest = {
+        id: 0,
+        phoneNumber: '',
+    };
 
-  number:"",
-
-  comment:""
-    }
-
-    constructor(private userService: UseService, private router: Router, private modalService: ModalService) {}
+    constructor(
+        protected userService: UseService,
+        private router: Router,
+        private modalService: ModalService
+    ) {}
     ngOnInit(): void {
-        const user = this.userService.getUser();
-        if (!user) {
-            this.router.navigate(['/login']);
-        } else {
-            this.user = this.userService.getUser();
-        }
-
+        this.userService.user$
+            .pipe(() => this.userService.getUserOfToken())
+            .subscribe({
+                next: (user: UserSchema) => {
+                    this.userService.setUser(user);
+                    console.log('user', this.userService.getUser())
+                },
+                error: (err: any) => {
+                    console.error('Erro ao carregar filmes:', err);
+                },
+            });
     }
 
-      openModalSignUp() {
+    openModalAddAddress() {
+        this.modalService.open(this.modalAddAddress);
+    }
 
-        this.modalService.open(this.modalContent);
+    openModalUpdateAddress() {
+        this.modalService.open(this.modalUpdateAddress);
+    }
+
+    openModalAddPhone() {
+        this.modalService.open(this.modalAddPhone);
+    }
+
+    openModalUpdatePhone() {
+        this.modalService.open(this.modalUpdatePhone);
     }
 
     requestAddAddress(event: Event) {
-         event.preventDefault();
+        event.preventDefault();
         this.userService.addAddress(this.addAddressRequest).subscribe({
             next: () => {
-
-                console.log("adicionado com sucesso")
+                console.log('adicionado com sucesso');
+                console.log(this.userService.getUser());
                 this.modalService.close();
             },
             error: () => {
                 console.error('Erro ao tentar se adicionar');
             },
-        })
+        });
+    }
+
+    requestUpdateAddress(event: Event, id: number) {
+        event.preventDefault();
+        this.userService.updateAddress(this.updateAddressRequest).subscribe({
+            next: () => {
+                console.log('adicionado com sucesso');
+                console.log(this.userService.getUser());
+                this.modalService.close();
+            },
+            error: () => {
+                console.error('Erro ao tentar se adicionar');
+            },
+        });
+    }
+
+
+    requestRemoveAddress(id:number ){
+
+        this.userService.removeAddress(id).subscribe({
+            next: () => {
+                console.log('removido com sucesso');
+                console.log(this.userService.getUser());
+                this.modalService.close();
+            },
+            error: () => {
+                console.error('Erro ao tentar remover');
+            },
+        });
+    }
+    requestUpdatePhone(event: Event ){
+        event.preventDefault();
+        this.userService.updatePhone(this.updatePhoneRequest).subscribe({
+            next: () => {
+                console.log('adicionado com sucesso');
+                console.log(this.userService.getUser());
+                this.modalService.close();
+            },
+            error: () => {
+                console.error('Erro ao tentar se atualizar');
+            },
+        });
+    }
+
+     requestAddPhone(event: Event) {
+        event.preventDefault();
+        this.userService.addPhone(this.addAPhoneRequest).subscribe({
+            next: () => {
+                console.log('autualizado com sucesso');
+                console.log(this.userService.getUser());
+                this.modalService.close();
+            },
+            error: () => {
+                console.error('Erro ao tentar atualizar');
+            },
+        });
+    }
+
+    requestRemovePhone(id: number){
+          this.userService.removePhone(id).subscribe({
+            next: () => {
+                console.log('removido com sucesso');
+                console.log(this.userService.getUser());
+                this.modalService.close();
+            },
+            error: () => {
+                console.error('Erro ao tentar se remover');
+            },
+        });
     }
 }

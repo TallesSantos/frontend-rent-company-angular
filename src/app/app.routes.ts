@@ -9,6 +9,7 @@ import { UserProfile } from './pages/user/user-profile/user-profile';
 import { ManageUsers } from './pages/user/admin/manage-users/manage-users';
 import { NotFound } from './pages/not-found/not-found';
 import { MovieDescriptionComponent } from './components/movie-description-component/movie-description-component';
+import { RentHistory } from './pages/user/rent-history/rent-history';
 
 export const routes: Routes = [
     {
@@ -34,9 +35,10 @@ export const routes: Routes = [
             //Client rotes
             { path: 'user-profile', component: UserProfile },
             { path: 'all-movies', component: CatalogPage },
+            { path: 'rented-history', component: RentHistory },
             { path: 'all-movies/:id/movie-description', component: MovieDescriptionComponent },
 
-            //admin rotes
+            //Admin rotes
             { path: 'manage-movies', component: ManageMovies },
             { path: 'manage-users', component: ManageUsers },
         ],

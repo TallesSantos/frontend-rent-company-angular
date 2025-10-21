@@ -84,6 +84,7 @@ export class MovieComponent implements OnInit {
             next: () => {
                 console.log('Filme devolvido com sucesso');
                 this.movieService.triggerReloadListOfMovies();
+                this.userService.triggerReloadListOfRentMovies();
             },
             error: (err) => {
                 console.error('Erro ao devolver o filme:', err);
@@ -116,7 +117,7 @@ export class MovieComponent implements OnInit {
     }
 
     movieIsRented(movie: MovieSchema) {
-        console.log(movie)
+
         if (movie.is_rent) {
             return true;
         }

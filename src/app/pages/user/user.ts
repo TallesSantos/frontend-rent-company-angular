@@ -13,9 +13,18 @@ export class User implements OnInit {
     protected user: UserSchema | null = null;
 
     constructor(private userService: UseService, private router: Router) {}
-
     ngOnInit(): void {
-        this.user = this.userService.getUser();
+        this.userService.user$
+            .pipe(() => this.userService.getUserOfToken())
+            .subscribe({
+                next: (user: UserSchema) => {
+                    this.user = user;
+                },
+                error: (err: any) => {
+                    this.user = null;
+                    console.error('Erro ao carregar usuario:', err);
+                },
+            });
     }
 
     getUser() {

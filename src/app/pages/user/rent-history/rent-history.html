@@ -1,0 +1,16 @@
+<div class="content_page_container">
+
+    <h1>Rented movies</h1>
+
+    @if(this.getRentHistory()?.length == 0){
+    <p>You do not have rented movies</p>
+    }@else{
+    <div class="movies">
+        @for (movie of this.getRentHistory(); track $index) {
+        <app-movie-component [movie]="movie"></app-movie-component>
+
+        }
+    </div>
+    }
+
+</div>

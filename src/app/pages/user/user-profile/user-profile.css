@@ -1,29 +1,20 @@
 .container {
     display: flex;
+   flex-wrap: wrap;
+    gap: 100px;
 }
 
-.container-item{
-    width: 50%;
+.box {
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
-.property_panel{
-   height :30vh;
-   border: dashed 1px gray;
-   overflow-y: scroll;
-   position: relative;
-   padding: 10px;
-   margin-bottom: 20px;
-}
-
-.add_property {
-    position: absolute;
-    top: 0;
-    right: 0;
-
-
-}
-
-.property{
-    border: dashed, 1px, gray;
+.item {
+    background-color:antiquewhite;
+    display: flex;
+    flex-direction: column;
     padding: 10px;
+    border-radius: 5px;
 }

@@ -1,11 +1,14 @@
+import { AuthService } from './../../services/auth-service/auth-service';
 import { ModalService } from './../../services/modal-service/modal-service';
 
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { UserSchema } from '../../../models/user-schema';
+
 import { FormsModule } from '@angular/forms';
 import { UseService } from '../../services/user-service/use-service';
 import { Router } from '@angular/router';
 import { SignInRequestSchema } from '../../../models/request/sign-up-request-schema';
+import { AuthResponse } from '../../../models/response/auth-response';
+import { UserSchema } from '../../../models/user-schema';
 
 @Component({
     selector: 'app-login',
@@ -27,12 +30,6 @@ export class Login {
         userType: 'CLIENT',
     };
 
-    constructor(
-        private userService: UseService,
-        private router: Router,
-        private modalService: ModalService
-    ) {}
-
     isLogged = false;
     isAdmin = false;
     protected username = '';
@@ -44,11 +41,30 @@ export class Login {
     };
     protected successMessage = '';
 
+    constructor(
+        private authService: AuthService,
+        private userService: UseService,
+        private router: Router,
+        private modalService: ModalService
+
+    ) {}
+
     requestLogin(username: string, password: string) {
-        this.userService.login(username, password).subscribe({
-            next: (resp: UserSchema) => {
+        this.authService.login(username, password).subscribe({
+            next: (resp: AuthResponse) => {
                 if (resp) {
-                    this.userService.setUser(resp);
+                    this.userService.setToken(resp.token);
+                    this.userService.getUserOfToken().subscribe({
+                        next: (resp: UserSchema) => {
+                            this.userService.setUser(resp);
+                        },
+                        error: (err) => {
+                              console.error('Erro ao tentar buscar usuario', err);
+                        },
+                    });
+
+                    console.log(resp);
+                    this.userService.setUser(null);
                     this.router.navigate(['user']);
                 }
             },
@@ -67,10 +83,12 @@ export class Login {
 
     requestSignUp(event: Event) {
         event.preventDefault();
-        this.userService.signUp(this.signInClient).subscribe({
-            next: (resp: UserSchema) => {
+        this.authService.signUp(this.signInClient).subscribe({
+            next: (resp: AuthResponse) => {
                 if (resp) {
-                    this.userService.setUser(resp);
+                    this.userService.setToken(resp.token);
+                    this.userService.setUser(null);
+                    /*
                     if (resp?.userType == 'CLIENT') {
                         this.router.navigate(['user/all-movies']);
                     } else {
@@ -78,6 +96,8 @@ export class Login {
                     }
                 }
                 this.router;
+                */
+                }
                 this.modalService.close();
             },
             error: (err) => {
