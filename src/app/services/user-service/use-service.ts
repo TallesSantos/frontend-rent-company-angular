@@ -7,6 +7,7 @@ import { LocalStorageService } from './../local-storage-service/local-storage-se
 import { UserSchema } from '../../../models/user-schema';
 import { AddressRequest, PhoneRequest } from '../../../models/request/user-profile-request';
 import { MovieSchema } from '../../../models/movie-schema';
+import { API_CURSER, SERVER_URL } from '../../../env/env';
 
 @Injectable({
     providedIn: 'root',
@@ -15,20 +16,18 @@ export class UseService {
 
     protected user: UserSchema | null = null;
 
-    constructor(private http: HttpClient, private localStorageService: LocalStorageService) {}
+    constructor(private http: HttpClient, private localStorageService: LocalStorageService) { }
 
     private API_USERS = 'http://localhost:8080/api-curser/api/users';
-
-    private token: string = '';
 
     //Usuario sincronizado
     private userSubject = new BehaviorSubject<UserSchema | null>(null);
     user$ = this.userSubject.asObservable();
 
-    setUser(user: UserSchema | null) {
-        this.userSubject.next(user);
-          this.user$
-            .pipe(() => this.getUserOfToken())
+    setUserFromBackend(token: string) {
+
+        this.user$
+            .pipe(() => this.getUserOfToken(token))
             .subscribe({
                 next: (user: UserSchema) => {
                     this.user = user;
@@ -38,16 +37,18 @@ export class UseService {
                     console.error('Erro ao carregar usuario:', err);
                 },
             });
+        this.userSubject.next(this.user);
     }
 
     getUser(): UserSchema | null {
         return this.user;
     }
 
-    getUserOfToken(): Observable<UserSchema> {
+    getUserOfToken(token: string): Observable<UserSchema> {
+        const url = SERVER_URL + API_CURSER.BASE_PATH + API_CURSER.REST.USER.BASE_PATH + API_CURSER.REST.USER.GET_CURRENT_USER;
         return this.http
-            .get<UserSchema>(`${this.API_USERS}/get-current-user`, {
-                headers: { Authorization: `Bearer ${this.token}` },
+            .get<UserSchema>(`${url}`, {
+                headers: { Authorization: `Bearer ${token}` },
             })
             .pipe(tap((user) => this.user = user));
     }
@@ -62,87 +63,109 @@ export class UseService {
         this.reloadTrigger.next();
     }
 
-    getToken(): string {
-        return this.token;
+        setToken(token: string) {
+       this.localStorageService.saveInLocalStorage("token", token)
     }
 
-    setToken(token: string) {
-        if (!token) {
-            this.token = '';
-            this.localStorageService.removeOfLocalStorage('token');
-        } else {
-            this.localStorageService.saveInLocalStorage('token', token);
-            this.token = token;
+    getToken(): string {
+        try {
+            const token = this.localStorageService.getFromLocalStorage('token');
+            const treatedToken = token.substring(1, token.length - 1);
+            return treatedToken;
+
+
+        } catch (e) {
+            console.log(e)
+            return ""
         }
+
+
+    }
+
+    removeToken() {
+        this.localStorageService.removeOfLocalStorage('token');
     }
 
     addAddress(request: Omit<AddressRequest, 'id'>): Observable<void> {
+        const url = SERVER_URL + API_CURSER.BASE_PATH + API_CURSER.REST.USER.BASE_PATH + API_CURSER.REST.USER.ADDRESSES;
+
         return this.http
-            .post<void>(`${this.API_USERS}/current-user/addresses`, request, {
+            .post<void>(`${url}`, request, {
                 headers: { Authorization: `Bearer ${this.getToken()}` },
             })
             .pipe(
-                tap(() => this.getUserOfToken().subscribe()) // Atualiza usuário após adicionar
+                tap(() => this.getUserOfToken(this.getToken()).subscribe()) // Atualiza usuário após adicionar
             );
     }
 
     updateAddress(request: AddressRequest): Observable<void> {
+        const url = SERVER_URL + API_CURSER.BASE_PATH + API_CURSER.REST.USER.BASE_PATH + API_CURSER.REST.USER.ADDRESSES;
+
         return this.http
-            .put<void>(`${this.API_USERS}/current-user/addresses`, request, {
+            .put<void>(`${url}`, request, {
                 headers: { Authorization: `Bearer ${this.getToken()}` },
             })
             .pipe(
-                tap(() => this.getUserOfToken().subscribe()) // Atualiza usuário após atualizar
+                tap(() => this.getUserOfToken(this.getToken()).subscribe()) // Atualiza usuário após atualizar
             );
     }
 
     removeAddress(id: number): Observable<void> {
+        const url = SERVER_URL + API_CURSER.BASE_PATH + API_CURSER.REST.USER.BASE_PATH + API_CURSER.REST.USER.ADDRESSES;
+
         return this.http
-            .delete<void>(`${this.API_USERS}/current-user/addresses`, {
+            .delete<void>(`${url}`, {
                 body: { id },
                 headers: { Authorization: `Bearer ${this.getToken()}` },
             })
             .pipe(
-                tap(() => this.getUserOfToken().subscribe()) // Atualiza usuário após remover
+                tap(() => this.getUserOfToken(this.getToken()).subscribe()) // Atualiza usuário após remover
             );
     }
 
     addPhone(request: Omit<PhoneRequest, 'id'>): Observable<void> {
+        const url = SERVER_URL + API_CURSER.BASE_PATH + API_CURSER.REST.USER.BASE_PATH + API_CURSER.REST.USER.PHONES;
+
         return this.http
-            .post<void>(`${this.API_USERS}/current-user/phones`, request, {
+            .post<void>(`${url}`, request, {
                 headers: { Authorization: `Bearer ${this.getToken()}` },
             })
             .pipe(
-                tap(() => this.getUserOfToken().subscribe()) // Atualiza usuário após adicionar
+                tap(() => this.getUserOfToken(this.getToken()).subscribe()) // Atualiza usuário após adicionar
             );
     }
 
     updatePhone(request: PhoneRequest): Observable<void> {
+        const url = SERVER_URL + API_CURSER.BASE_PATH + API_CURSER.REST.USER.BASE_PATH + API_CURSER.REST.USER.PHONES;
+
         return this.http
-            .put<void>(`${this.API_USERS}/current-user/phones`, request, {
+            .put<void>(`${url}`, request, {
                 headers: { Authorization: `Bearer ${this.getToken()}` },
             })
             .pipe(
-                tap(() => this.getUserOfToken().subscribe()) // Atualiza usuário após atualizar
+                tap(() => this.getUserOfToken(this.getToken()).subscribe()) // Atualiza usuário após atualizar
             );
     }
 
     removePhone(id: number): Observable<void> {
+        const url = SERVER_URL + API_CURSER.BASE_PATH + API_CURSER.REST.USER.BASE_PATH + API_CURSER.REST.USER.PHONES;
+
         return this.http
-            .delete<void>(`${this.API_USERS}/current-user/phones`, {
+            .delete<void>(`${url}`, {
                 body: { id },
                 headers: { Authorization: `Bearer ${this.getToken()}` },
             })
             .pipe(
-                tap(() => this.getUserOfToken().subscribe()) // Atualiza usuário após remover
+                tap(() => this.getUserOfToken(this.getToken()).subscribe()) // Atualiza usuário após remover
             );
     }
 
     listAllHistoryOfClient(): Observable<MovieSchema[]> {
-        return this.http
+        const url = SERVER_URL + API_CURSER.BASE_PATH + API_CURSER.REST.CLIENT.BASE_PATH + API_CURSER.REST.CLIENT.RENT_HISTORY;
 
+        return this.http
             .get<MovieSchema[]>(
-                `${this.API_USERS.substring(0, 36)}/clients/current-user/rent-history`,
+                `${url}`,
                 {
                     headers: { Authorization: `Bearer ${this.getToken()}` },
                 }
@@ -160,8 +183,10 @@ export class UseService {
     }
 
     comment(movieId: number, commentParentId: number | undefined, text: string) {
+        const url = SERVER_URL + API_CURSER.BASE_PATH + API_CURSER.REST.CLIENT.BASE_PATH + API_CURSER.REST.CLIENT.ADD_COMMENT;
+
         return this.http.post<MovieSchema[]>(
-            `${this.API_USERS.substring(0, 36)}/clients/current-user/add-comment`,
+            `${url}`,
             { movieId, parentId: commentParentId, commentText: text },
             {
                 headers: { Authorization: `Bearer ${this.getToken()}` },
@@ -169,8 +194,10 @@ export class UseService {
         );
     }
     updateComment(id: number | undefined, text: string) {
+        const url = SERVER_URL + API_CURSER.BASE_PATH + API_CURSER.REST.CLIENT.BASE_PATH + API_CURSER.REST.CLIENT.UPDATE_COMMENT;
+
         return this.http.put<MovieSchema[]>(
-            `${this.API_USERS.substring(0, 36)}/clients/current-user/update-comment`,
+            `${url}`,
             {
                 id,
                 commentText: text,
@@ -182,8 +209,10 @@ export class UseService {
     }
 
     removeComment(id: number | undefined) {
+        const url = SERVER_URL + API_CURSER.BASE_PATH + API_CURSER.REST.CLIENT.BASE_PATH + API_CURSER.REST.CLIENT.REMOVE_COMMENT;
+
         return this.http.delete<MovieSchema[]>(
-            `${this.API_USERS.substring(0, 36)}/clients/current-user/remove-comment`,
+            `${url}`,
 
             {
                 body: { id },

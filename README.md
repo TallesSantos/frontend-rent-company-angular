@@ -1,70 +1,71 @@
-# Frontend_rent_company
+# 🎬 Frontend - Movie Rental Company
 
-## Feature gif: 
-![feature gif](doc/locadora_com_angular_atualizado.gif)
+Frontend de uma aplicação de **locadora de filmes**, desenvolvida com **Angular**. Este projeto consome serviços REST e SOAP fornecidos por um backend separado.
+
+---
+
+## 📽️ Demonstração da Aplicação
+
+![Feature GIF](doc/locadora_com_angular_atualizado.gif)
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+- [Node.js](https://nodejs.org/) (para gerenciamento de dependências)
+- [Angular CLI](https://angular.io/cli)
+
+---
+
+## ⚙️ Configuração de Ambiente
+
+O projeto utiliza um arquivo para configuração de variáveis de ambiente:
 
 
+Você deve configurar os endpoints do backend neste arquivo. Exemplo:
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.4.
+```ts
+// URL base do servidor backend
+export const SERVER_URL = "http://localhost:8080";
 
-## Development server
+// Endpoints para autenticação
+export const API_CREDENTIAL = {
+  BASE_PATH: '/api-credentials/api',
+  LOGIN: '/auth/login',
+  SIGN_UP: 'auth/sign-up'
+};
 
-To start a local development server, run:
+// Endpoints do sistema de locação de filmes
+export const API_CURSER = {
+  BASE_PATH: '/api-curser',
+  SOAP: {
+    MOVIE_PATH: '/MovieSoapService',
+    CLIENT_PATH: '/ClientSoapService'
+  },
+  REST: {
+    USER: {
+      BASE_PATH: "/api/users",
+      GET_CURRENT_USER: "/get-current-user",
+      ADDRESSES: "/current-user/addresses",
+      PHONES: "/current-user/phones"
+    },
+    CLIENT: {
+      BASE_PATH: "/api/clients",
+      RENT_HISTORY: "/current-user/rent-history",
+      ADD_COMMENT: "/current-user/add-comment",
+      UPDATE_COMMENT: "/current-user/update-comment",
+      REMOVE_COMMENT: "/current-user/remove-comment"
+    }
+  }
+};
 
-```bash
-ng serve
 ```
+## ⚙️Comandos do projeto :
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### Para instalar o projeto:
+ - ng install
 
-## Code scaffolding
+### Para iniciar o projeto:
+ - ng serve
+ - acessar http://localhost:4200
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
-
-
-# TODO
-
- * [x] Implementação de inteface para crud de movie e client, inclusive para alugar e devolver filme. 
- * [X] Criação do usuario e crud do mesmo para que seja possivel manipular usuários pelo front. Obs: Criar permissões de criação de movie e validações(por exemplo não se pode deletar um movie do catalogo se ele estiver alugado)

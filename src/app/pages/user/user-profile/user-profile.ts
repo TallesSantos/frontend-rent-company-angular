@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
     templateUrl: './user-profile.html',
     styleUrl: './user-profile.css',
 })
-export class UserProfile implements OnInit {
+export class UserProfile {
     @ViewChild('modalAddAddress') modalAddAddress!: TemplateRef<any>;
     @ViewChild('modalUpdateAddress') modalUpdateAddress!: TemplateRef<any>;
     @ViewChild('modalAddPhone') modalAddPhone!: TemplateRef<any>;
@@ -51,19 +51,7 @@ export class UserProfile implements OnInit {
         private router: Router,
         private modalService: ModalService
     ) {}
-    ngOnInit(): void {
-        this.userService.user$
-            .pipe(() => this.userService.getUserOfToken())
-            .subscribe({
-                next: (user: UserSchema) => {
-                    this.userService.setUser(user);
 
-                },
-                error: (err: any) => {
-                    console.error('Erro ao carregar filmes:', err);
-                },
-            });
-    }
 
     openModalAddAddress() {
         this.modalService.open(this.modalAddAddress);
@@ -142,7 +130,6 @@ export class UserProfile implements OnInit {
         this.userService.addPhone(this.addAPhoneRequest).subscribe({
             next: () => {
                 console.log('autualizado com sucesso');
-                console.log(this.userService.getUser());
                 this.modalService.close();
             },
             error: () => {

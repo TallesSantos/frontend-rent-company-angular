@@ -10,7 +10,5 @@ import { UseService } from '../../../services/user-service/use-service';
 export class HomepageUser {
     constructor(protected userService: UseService){}
 
-    printUser(){
-        console.log(this.userService.getUser())
-    }
+
 }

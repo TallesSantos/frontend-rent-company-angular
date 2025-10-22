@@ -6,6 +6,7 @@ import { MovieSchema } from '../../../models/movie-schema';
 import { createSoapBody, createSoapEnvelope } from '../soap-util';
 import { createMovieSchema } from '../movie-util';
 import { UseService } from '../user-service/use-service';
+import { API_CURSER, SERVER_URL } from '../../../env/env';
 
 @Injectable({
     providedIn: 'root',
@@ -20,16 +21,13 @@ export class MovieService {
         this.reloadTrigger.next();
     }
 
-    private apiUrlMovieService = 'http://localhost:8080/api-curser/MovieSoapService';
-    private apiUrlClientService = 'http://localhost:8080/api-curser/ClientSoapService';
-
     constructor(private http: HttpClient, private userService: UseService) {
 
     }
 
     listAllMovies(): Observable<MovieSchema[]> {
         return this.http
-            .post(this.apiUrlMovieService, createSoapEnvelope('listAll'), {
+            .post(SERVER_URL + API_CURSER.BASE_PATH + API_CURSER.SOAP.MOVIE_PATH, createSoapEnvelope('listAll'), {
                 headers: {
                     'Content-Type': 'text/xml;charset=UTF-8',
                     SOAPAction: '',
@@ -69,7 +67,7 @@ export class MovieService {
             },
         ]);
 
-        return this.http.post(this.apiUrlMovieService, createSoapEnvelope('createMovie', body), {
+        return this.http.post(SERVER_URL + API_CURSER.BASE_PATH + API_CURSER.SOAP.MOVIE_PATH, createSoapEnvelope('createMovie', body), {
             headers: {
                 'Content-Type': 'text/xml;charset=UTF-8',
                 SOAPAction: '',
@@ -98,7 +96,7 @@ export class MovieService {
             },
         ]);
 
-        return this.http.post(this.apiUrlMovieService, createSoapEnvelope('updateMovie', body), {
+        return this.http.post(SERVER_URL + API_CURSER.BASE_PATH + API_CURSER.SOAP.MOVIE_PATH, createSoapEnvelope('updateMovie', body), {
             headers: {
                 'Content-Type': 'text/xml;charset=UTF-8',
                 SOAPAction: '',
@@ -113,8 +111,8 @@ export class MovieService {
             <arg0> ${id} </arg0>
         `;
 
-        return this.http.post(this.apiUrlMovieService, createSoapEnvelope('deleteMovie', body), {
-             headers: {
+        return this.http.post(SERVER_URL + API_CURSER.BASE_PATH + API_CURSER.SOAP.MOVIE_PATH, createSoapEnvelope('deleteMovie', body), {
+            headers: {
                 'Content-Type': 'text/xml;charset=UTF-8',
                 SOAPAction: '',
                 Authorization: `Bearer ${this.userService.getToken()}`,
@@ -130,8 +128,9 @@ export class MovieService {
         `;
 
         const soapEnvelop = createSoapEnvelope('rentMovie', body);
-
-        return this.http.post(this.apiUrlClientService, soapEnvelop, {
+        const url = SERVER_URL + API_CURSER.BASE_PATH + API_CURSER.SOAP.CLIENT_PATH
+        console.log("url" + url)
+        return this.http.post(url, soapEnvelop, {
             headers: {
                 'Content-Type': 'text/xml;charset=UTF-8',
                 SOAPAction: '',
@@ -147,7 +146,10 @@ export class MovieService {
             <arg1> ${idMovie} </arg1>
         `;
 
-        return this.http.post(this.apiUrlClientService, createSoapEnvelope('returnMovie', body), {
+        const url = SERVER_URL + API_CURSER.BASE_PATH + API_CURSER.SOAP.CLIENT_PATH
+        console.log("url", url)
+
+        return this.http.post(url, createSoapEnvelope('returnMovie', body), {
             headers: {
                 'Content-Type': 'text/xml;charset=UTF-8',
                 SOAPAction: '',

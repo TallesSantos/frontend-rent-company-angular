@@ -8,7 +8,6 @@ import { UseService } from '../../services/user-service/use-service';
 import { Router } from '@angular/router';
 import { SignInRequestSchema } from '../../../models/request/sign-up-request-schema';
 import { AuthResponse } from '../../../models/response/auth-response';
-import { UserSchema } from '../../../models/user-schema';
 
 @Component({
     selector: 'app-login',
@@ -53,16 +52,8 @@ export class Login {
             next: (resp: AuthResponse) => {
                 if (resp) {
                     this.userService.setToken(resp.token);
-                    this.userService.getUserOfToken().subscribe({
-                        next: (resp: UserSchema) => {
-
-                            this.userService.setUser(resp);
-                            this.router.navigate(['user']);
-                        },
-                        error: (err) => {
-                            console.error('Erro ao tentar buscar usuario', err);
-                        },
-                    });
+                    this.userService.setUserFromBackend(resp.token);
+                    this.router.navigate(['user']);
                 }
             },
             error: (err) => {
@@ -84,17 +75,8 @@ export class Login {
             next: (resp: AuthResponse) => {
                 if (resp) {
                     this.userService.setToken(resp.token);
-                    this.userService.setUser(null);
-                    this.userService.getUserOfToken().subscribe({
-                        next: (resp: UserSchema) => {
-
-                            this.userService.setUser(resp);
-                            this.router.navigate(['user']);
-                        },
-                        error: (err) => {
-                            console.error('Erro ao tentar buscar usuario apos o cadastro', err);
-                        },
-                    });
+                    this.userService.setUserFromBackend(resp.token);
+                    this.router.navigate(['user']);
                 }
                 this.modalService.close();
             },
