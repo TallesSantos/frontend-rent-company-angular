@@ -1,3 +1,13 @@
 .comment-container{
+    height: 100%;
+    width: 100%;
+    padding: 10px;
     border: dashed 1px gray;
+}
+
+.comment_text_container{
+    height: 50px;
+    padding: 10px;
+    background-color: white;
+    overflow: auto;
 }

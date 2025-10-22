@@ -46,7 +46,6 @@ export class Login {
         private userService: UseService,
         private router: Router,
         private modalService: ModalService
-
     ) {}
 
     requestLogin(username: string, password: string) {
@@ -56,16 +55,12 @@ export class Login {
                     this.userService.setToken(resp.token);
                     this.userService.getUserOfToken().subscribe({
                         next: (resp: UserSchema) => {
-                            this.userService.setUser(resp);
-                            if(resp.userType === "CLIENT"){
-                                this.router.navigate(['user/all-movies']);
-                            }else{
-                                this.router.navigate(['user/manage-movies']);
-                            }
 
+                            this.userService.setUser(resp);
+                            this.router.navigate(['user']);
                         },
                         error: (err) => {
-                              console.error('Erro ao tentar buscar usuario', err);
+                            console.error('Erro ao tentar buscar usuario', err);
                         },
                     });
                 }
@@ -90,15 +85,16 @@ export class Login {
                 if (resp) {
                     this.userService.setToken(resp.token);
                     this.userService.setUser(null);
-                    /*
-                    if (resp?.userType == 'CLIENT') {
-                        this.router.navigate(['user/all-movies']);
-                    } else {
-                        this.router.navigate(['user/manage-movies']);
-                    }
-                }
-                this.router;
-                */
+                    this.userService.getUserOfToken().subscribe({
+                        next: (resp: UserSchema) => {
+
+                            this.userService.setUser(resp);
+                            this.router.navigate(['user']);
+                        },
+                        error: (err) => {
+                            console.error('Erro ao tentar buscar usuario apos o cadastro', err);
+                        },
+                    });
                 }
                 this.modalService.close();
             },

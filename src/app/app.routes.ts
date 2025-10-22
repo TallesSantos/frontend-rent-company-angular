@@ -10,19 +10,20 @@ import { ManageUsers } from './pages/user/admin/manage-users/manage-users';
 import { NotFound } from './pages/not-found/not-found';
 import { MovieDescriptionComponent } from './components/movie-description-component/movie-description-component';
 import { RentHistory } from './pages/user/rent-history/rent-history';
+import { HomepageUser } from './pages/user/homepage-user/homepage-user';
 
 export const routes: Routes = [
     {
         path: '',
-        component: AboutPage,
+        component: CatalogPage,
     },
     {
         path: 'login',
         component: Login,
     },
     {
-        path: 'catalog',
-        component: CatalogPage,
+        path: 'about',
+        component: AboutPage,
     },
     {
         path: 'catalog/:id/movie-description',
@@ -33,6 +34,7 @@ export const routes: Routes = [
         component: User,
         children: [
             //Client rotes
+            { path: '', component: HomepageUser },
             { path: 'user-profile', component: UserProfile },
             { path: 'all-movies', component: CatalogPage },
             { path: 'rented-history', component: RentHistory },

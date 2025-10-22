@@ -12,7 +12,7 @@ import { CommentComponent } from '../comment-component/comment-component';
 })
 export class MovieDescriptionComponent implements OnInit {
 
-   showComments = false;
+   showComments = true;
 
     toggleComments() {
         this.showComments = !this.showComments;

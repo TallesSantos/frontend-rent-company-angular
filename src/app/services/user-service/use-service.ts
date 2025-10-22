@@ -12,7 +12,6 @@ import { MovieSchema } from '../../../models/movie-schema';
     providedIn: 'root',
 })
 export class UseService {
-
     constructor(private http: HttpClient, private localStorageService: LocalStorageService) {}
 
     private API_USERS = 'http://localhost:8080/api-curser/api/users';
@@ -137,9 +136,45 @@ export class UseService {
             .pipe(
                 tap((rentHistory) => {
                     return rentHistory.map((m) => {
-                        return { ...m, image_url: m.image_url !== undefined? m?.image_url : m?.imageUrl };
+                        return {
+                            ...m,
+                            image_url: m.image_url !== undefined ? m?.image_url : m?.imageUrl,
+                        };
                     });
                 })
             );
+    }
+
+    comment(movieId: number, commentParentId: number | undefined, text: string) {
+        return this.http.post<MovieSchema[]>(
+            `${this.API_USERS.substring(0, 36)}/clients/current-user/add-comment`,
+            { movieId, parentId: commentParentId, commentText: text },
+            {
+                headers: { Authorization: `Bearer ${this.getToken()}` },
+            }
+        );
+    }
+    updateComment(id: number | undefined, text: string) {
+        return this.http.put<MovieSchema[]>(
+            `${this.API_USERS.substring(0, 36)}/clients/current-user/update-comment`,
+            {
+                id,
+                commentText: text,
+            },
+            {
+                headers: { Authorization: `Bearer ${this.getToken()}` },
+            }
+        );
+    }
+
+    removeComment(id: number | undefined) {
+        return this.http.delete<MovieSchema[]>(
+            `${this.API_USERS.substring(0, 36)}/clients/current-user/remove-comment`,
+
+            {
+                body: { id },
+                headers: { Authorization: `Bearer ${this.getToken()}` },
+            }
+        );
     }
 }

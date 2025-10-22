@@ -19,6 +19,7 @@ export class User implements OnInit {
             .subscribe({
                 next: (user: UserSchema) => {
                     this.user = user;
+                    this.router.navigate([""])
                 },
                 error: (err: any) => {
                     this.user = null;

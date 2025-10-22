@@ -4,25 +4,34 @@
     padding-right: 10vw;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: stretch;
+
+
 }
 
 .movie_description_left {
-    height: 100%;
+    height: 80vh;
     width: 60%;
     padding: 20px;
     background-color: antiquewhite;
     display: flex;
     flex-direction: column;
     align-items: center;
+
 }
 
 .movie_description_right {
-    height:  80%;
-    display: flex;
+
+
     background-color: antiquewhite;
+
+    height: 80vh;
+    width: 40%;
     padding: 20px;
-    height: 100%;
+    overflow: auto;
+
+    border-left: 1px dashed black;
+
 
 }
 

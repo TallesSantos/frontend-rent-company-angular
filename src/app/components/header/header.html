@@ -2,9 +2,9 @@
     <nav>
         <ul>
             @if(getUser() === null){
-            <li><a routerLink="">About</a></li>
+            <li><a routerLink="about">About</a></li>
             <li><a routerLink="login">Login</a></li>
-            <li><a routerLink="catalog">Catalog</a></li>
+            <li><a routerLink="">Catalog</a></li>
             }@else{
             <li><a routerLink="/user/user-profile">User profile</a></li>
             @if(getUser()?.userType === "CLIENT"){

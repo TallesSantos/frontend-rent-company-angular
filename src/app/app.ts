@@ -1,5 +1,6 @@
+import { LocalStorageService } from './services/local-storage-service/local-storage-service';
 import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { UseService } from './services/user-service/use-service';
 import { UserSchema } from '../models/user-schema';
 import { Header } from './components/header/header';
@@ -11,8 +12,15 @@ import { ModalComponent } from './components/modal-component/modal-component';
     templateUrl: './app.html',
     styleUrls: ['styles/global.css', './app.css'],
 })
-export class App  {
-    constructor(private userService: UseService) {}
+export class App implements OnInit  {
+
+    constructor(private localStorageService: LocalStorageService, private router:Router) {}
+
+    ngOnInit(): void {
+        if(this.localStorageService.getFromLocalStorage("token")){
+            this.router.navigate(['user'])
+        }
+    }
     protected user!: UserSchema | null;
 
 }

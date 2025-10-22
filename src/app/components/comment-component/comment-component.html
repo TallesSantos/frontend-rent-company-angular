@@ -2,33 +2,46 @@
     <ng-content></ng-content>
 
     @if(comment !== null){
-    <p>text: {{ comment.commentText }}</p>
-    <div style="display: flex">
-        <p>likes: {{ comment.nameOfLikers?.length }}</p>
-        <p>comments: {{ comment?.children?.length }}</p>
+    <p class="comment_text_container">text: {{ comment.commentText }}</p>
+
+    <div>
+        <textarea #commentText></textarea>
+
+        <button (click)="addChildrenComment(commentText.value)">Add children comment</button>
+
+        @if(comment.ownerName == this.userService.getUser()?.name){
+            <textarea #update_comment_input></textarea>
+
+        <button (click)="updateComment(update_comment_input.value)">Update comment</button>
+
+        <button (click)="removeComment()">Invalidate comment</button>
+        }
+
     </div>
-    <p>publishedAt: {{comment.publishedAt}} by {{comment.ownerName}}</p>
-
-    @if(comment?.children?.length !== 0){
-
+    @if(comment.children?.length !== 0 ){
     <button (click)="toggleChildrenComments()">Children comments:</button>
     } @for(children of comment.children; let i = $index; track children.id){
     <div>
         <div
+            app-comment-component
             class="comment"
-            [style.background]="computedBgColor"
-            [style.margin]="computedWidth"
             *ngIf="showChildrenComments"
             class="toggle_children_comments"
             [level]="level + 1"
-            app-comment-component
             [comment]="children"
+            [parentMovie]="getParentMovie()"
+            [parentComment]="comment"
+            [style.background]="computedBgColor"
+            [style.margin]="computedWidth"
         >
-            <p>level: {{ level }}</p>
-            <p><strong>Comentario filho</strong></p>
+            <div style="display: flex; justify-content: space-between">
+                <p>publishedAt: {{ comment.publishedAt }} by {{ comment.ownerName }}</p>
+                <p>likes: {{ comment.nameOfLikers?.length }}</p>
+                <p>comments: {{ comment?.children?.length }}</p>
+            </div>
         </div>
     </div>
 
     } }
-    <button>Add comment</button>
+
 </div>

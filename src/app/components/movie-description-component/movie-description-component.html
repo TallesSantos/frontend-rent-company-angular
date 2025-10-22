@@ -21,11 +21,15 @@
         <div>
         @if(movie?.comments!== undefined && movie?.comments?.length ){
         <p>comments: {{ movie?.comments?.length }}</p>
-        <button (click)="toggleComments()">Comments:</button>
+
 
         } @if (showComments) { @for(comment of movie?.comments;track comment.id){
-        <div app-comment-component [comment]="comment">
-            <p><strong>Comentario root </strong></p>
+        <div app-comment-component [comment]="comment" [parentMovie]="movie!">
+             <div style="display: flex; justify-content: space-between">
+                <p>publishedAt: {{ comment.publishedAt }} by {{ comment.ownerName }}</p>
+                <p>likes: {{ comment.nameOfLikers?.length }}</p>
+                <p>comments: {{ comment?.children?.length }}</p>
+            </div>
         </div>
         }
         <button>criar commentario</button>
