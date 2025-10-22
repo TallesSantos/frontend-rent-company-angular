@@ -12,15 +12,17 @@ import { ModalComponent } from './components/modal-component/modal-component';
     templateUrl: './app.html',
     styleUrls: ['styles/global.css', './app.css'],
 })
-export class App implements OnInit  {
-
-    constructor(private localStorageService: LocalStorageService, private router:Router) {}
-
+export class App implements OnInit{
+    constructor(private userService: UseService, private localStorageService: LocalStorageService, private router: Router) {}
     ngOnInit(): void {
-        if(this.localStorageService.getFromLocalStorage("token")){
-            this.router.navigate(['user'])
-        }
-    }
-    protected user!: UserSchema | null;
 
+            if(this.localStorageService.getFromLocalStorage("token")){
+
+                console.log( this.userService.getUserOfToken())
+            }
+
+    }
+    printUser() {
+        console.log(this.userService.getUser());
+    }
 }

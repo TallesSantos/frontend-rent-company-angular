@@ -9,24 +9,11 @@ import { UserSchema } from '../../../models/user-schema';
     templateUrl: './user.html',
     styleUrl: './user.css',
 })
-export class User implements OnInit {
-    protected user: UserSchema | null = null;
+export class User  {
+
 
     constructor(private userService: UseService, private router: Router) {}
-    ngOnInit(): void {
-        this.userService.user$
-            .pipe(() => this.userService.getUserOfToken())
-            .subscribe({
-                next: (user: UserSchema) => {
-                    this.user = user;
-                    this.router.navigate([""])
-                },
-                error: (err: any) => {
-                    this.user = null;
-                    console.error('Erro ao carregar usuario:', err);
-                },
-            });
-    }
+
 
     getUser() {
         return this.userService.getUser();

@@ -12,6 +12,9 @@ import { MovieSchema } from '../../../models/movie-schema';
     providedIn: 'root',
 })
 export class UseService {
+
+    protected user: UserSchema | null = null;
+
     constructor(private http: HttpClient, private localStorageService: LocalStorageService) {}
 
     private API_USERS = 'http://localhost:8080/api-curser/api/users';
@@ -24,10 +27,21 @@ export class UseService {
 
     setUser(user: UserSchema | null) {
         this.userSubject.next(user);
+          this.user$
+            .pipe(() => this.getUserOfToken())
+            .subscribe({
+                next: (user: UserSchema) => {
+                    this.user = user;
+                },
+                error: (err: any) => {
+                    this.user = null;
+                    console.error('Erro ao carregar usuario:', err);
+                },
+            });
     }
 
     getUser(): UserSchema | null {
-        return this.userSubject.value;
+        return this.user;
     }
 
     getUserOfToken(): Observable<UserSchema> {
@@ -35,7 +49,7 @@ export class UseService {
             .get<UserSchema>(`${this.API_USERS}/get-current-user`, {
                 headers: { Authorization: `Bearer ${this.token}` },
             })
-            .pipe(tap((user) => this.setUser(user)));
+            .pipe(tap((user) => this.user = user));
     }
 
     //Rent history sincronizado
