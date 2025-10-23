@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { UseService } from '../../services/user-service/use-service';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { UserSchema } from '../../../models/user-schema';
+import { Component  } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+
 
 @Component({
     selector: 'app-user',
@@ -11,11 +10,4 @@ import { UserSchema } from '../../../models/user-schema';
 })
 export class User  {
 
-
-    constructor(private userService: UseService, private router: Router) {}
-
-
-    getUser() {
-        return this.userService.getUser();
-    }
 }
